@@ -1,7 +1,7 @@
 using AstalMpris;
 using GtkLayerShell;
 
-[GtkTemplate (ui = "/com/github/ARKye03/morghulis/ui/Mpris.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Mpris.ui")]
 public class Mpris : Gtk.Box {
 
 public AstalMpris.Mpris mpris = AstalMpris.Mpris.get_default ();

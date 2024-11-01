@@ -1,19 +1,20 @@
-public class Morghulis : Adw.Application {
-public static Morghulis instance { get; private set; }
+public class Geronimo : Adw.Application {
+public static Geronimo instance { get; private set; }
 private List<ILayerWindow> windows = new List<ILayerWindow> ();
 private bool css_loaded = false;
 private Daemon daemon;
 
 public static void main (string[] args) {
-	instance = new Morghulis ();
+	instance = new Geronimo ();
 	instance.init_types ();
 	instance.run (args);
 }
 
 construct {
-	application_id = "com.github.arkye03.morghulis";
+	application_id = "com.github.keke712.geronimo";
 	flags = ApplicationFlags.HANDLES_COMMAND_LINE;
 }
+
 private void init_types () {
 	typeof (QuickSettings).ensure ();
 	typeof (QuickSettingsButton).ensure ();
@@ -28,6 +29,7 @@ public override void activate () {
 	windows.append (new StatusBar (this));
 	windows.append (new QuickSettings ());
 	windows.append (new Runner ());
+	windows.append (new Popup ());
 
 	foreach (var window in windows) {
 		window.present_layer ();
@@ -55,7 +57,7 @@ public bool toggle_window (string name) {
 
 void load_css () {
 	Gtk.CssProvider provider = new Gtk.CssProvider ();
-	provider.load_from_resource ("com/github/ARKye03/morghulis/morghulis.css");
+	provider.load_from_resource ("com/github/Keke712/geronimo/geronimo.css");
 	Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider,
 						   Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
@@ -95,7 +97,7 @@ public string process_command (string command) {
 }
 
 private string print_help () {
-	return "Usage: morghulis [options]\n"
+	return "Usage: geronimo [options]\n"
 	       + "Options:\n"
 	       + "  \033[34m-T|--toggle-window\033[0m \033[32m<window>\033[0m  | Toggle visibility of the specified window\n"
 	       + "  \033[34m-Q|--quit\033[0m                    | Quit the application\n"

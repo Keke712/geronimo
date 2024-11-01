@@ -1,9 +1,6 @@
 using Gtk 4.0;
 using Adw 1;
 using AstalWp 0.1;
-using AstalNetwork 0.1;
-using AstalBluetooth 0.1;
-using AstalNotifd 0.1;
 
 template $QuickSettings: Window {
     styles [
@@ -24,7 +21,7 @@ template $QuickSettings: Window {
             column-spacing: 10;
             row-spacing: 10;
 
-            Box {
+            /* Box {
                 hexpand: true;
                 vexpand: true;
                 homogeneous: true;
@@ -39,24 +36,63 @@ template $QuickSettings: Window {
                 ]
 
                 Image {
-                    file: "/home/archkye/user.png";
+                    file: "./assets/archLogo.svg";
                     halign: center;
                     valign: center;
                     hexpand: true;
                     vexpand: true;
                     pixel-size: 100;
                 }
-            }
+            } */
 
             // Calendar Grid (1:1)
             Gtk.Calendar {
                 layout {
-                    row: 1;
+                    row: 0;
                     column: 0;
                 }
 
                 hexpand: true;
                 vexpand: true;
+
+                styles [
+                    "quick_settings_grid_box"
+                ]
+            }
+
+            // Backlight Slider (Box)
+            Gtk.Box {
+                layout {
+                    row: 1;
+                    column: 0;
+                    row-span: 1;
+                }
+
+                hexpand: true;
+                vexpand: true;
+
+                Image {
+                    icon-name: "display-brightness-symbolic";
+                }
+
+                Scale {
+                    hexpand: true;
+
+                    adjustment: Adjustment backlight_adjust {
+                        lower: 0;
+                        upper: 1;
+                    };
+
+                    styles [
+                        "geronimo_slider"
+                    ]
+
+                }
+
+                Label backlight_label {
+                    label: bind $update_backlight() as <string>;
+                    width-request: 50;
+                }
 
                 styles [
                     "quick_settings_grid_box"
@@ -87,7 +123,7 @@ template $QuickSettings: Window {
                     };
 
                     styles [
-                        "morghulis_slider"
+                        "geronimo_slider"
                     ]
                 }
 
@@ -112,8 +148,10 @@ template $QuickSettings: Window {
                 vexpand: true;
                 column-spacing: 5;
                 row-spacing: 5;
+
                 // Grid for QuickSettingsButtons
-                Grid quick_settings_buttons {
+                // We need to 
+                Grid quick_settings_grid {
                     layout {
                         row: 0;
                         column: 0;
@@ -128,58 +166,7 @@ template $QuickSettings: Window {
                     styles [
                         "quick_settings_grid_box"
                     ]
-
-                    $QuickSettingsButton {
-                        clicked => $network_clicked();
-                        icon: bind template.network as <AstalNetwork.Network>.wifi as <AstalNetwork.Wifi>.icon-name;
-                        active: bind template.network as <AstalNetwork.Network>.wifi as <AstalNetwork.Wifi>.enabled;
-
-                        layout {
-                            row: 0;
-                            column: 0;
-                        }
-                    }
-
-                    $QuickSettingsButton {
-                        icon: bind $active_vpn(template.network) as <string>;
-                        clicked => $toggle_vpn();
-
-                        layout {
-                            row: 1;
-                            column: 0;
-                        }
-                    }
-
-                    $QuickSettingsButton {
-                        icon: bind $bluetooth_icon_name(template.bluetooth as <AstalBluetooth.Bluetooth>.is-powered) as <string>;
-                        active: bind template.bluetooth as <AstalBluetooth.Bluetooth>.is-powered;
-                        clicked => $bluetooth_clicked();
-                        clicked_extras => $bluetooth_clicked_extras();
-
-                        layout {
-                            row: 0;
-                            column: 1;
-                        }
-                    }
-
-                    $QuickSettingsButton {
-                        layout {
-                            row: 1;
-                            column: 1;
-                        }
-                    }
-
-                    $QuickSettingsButton {
-                        layout {
-                            row: 2;
-                            column: 0;
-                        }
-
-                        icon: bind $dont_disturb_icon(template.notifd as <AstalNotifd.Notifd>.dont-disturb) as <string>;
-                        inactive: bind template.notifd as <AstalNotifd.Notifd>.dont-disturb;
-                        clicked => $toggle_disturb();
-                        clicked_extras => $on_notif_arrow_clicked();
-                    }
+                    
                 }
 
                 // Grid for Carousel

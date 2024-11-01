@@ -1,11 +1,15 @@
+
 using AstalHyprland;
 using GtkLayerShell;
 
-[GtkTemplate (ui = "/com/github/ARKye03/morghulis/ui/StatusBar.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/StatusBar.ui")]
 public class StatusBar : Gtk.Window, ILayerWindow {
 // Properties
 private AstalMpris.Mpris mpris { get; set; }
 private AstalHyprland.Hyprland hyprland { get; set; }
+
+private AstalBattery.Device battery;
+
 private List<Gtk.Button> workspace_buttons = new List<Gtk.Button> ();
 
 public AstalMpris.Player mpd { get; set; }
@@ -27,15 +31,17 @@ public unowned Gtk.Label client_label;
 public unowned Gtk.Label clock;
 
 [GtkChild]
+public unowned Gtk.Label battery_label;
+
+[GtkChild]
 public unowned Gtk.Button power_button;
 
-// Workspace icons
-private static string[] wicons = {
-	" ", " ", "󰨞 ",
-	" ", " ", "󰭹 ",
-	" ", " ", "󰊖 ",
-	" ",
-};
+[GtkChild]
+public unowned Gtk.Image battery_icon;
+
+// Workspace icon
+private static string wicon = "󰝥 ";
+private int max_workspace_id = 10;  // Set a maximum number of workspaces
 
 public StatusBar (Gtk.Application app) {
 	Object (application: app);
@@ -49,21 +55,25 @@ private void initialize_components () {
 	mpris = AstalMpris.Mpris.get_default ();
 	hyprland = AstalHyprland.Hyprland.get_default ();
 
+	battery = AstalBattery.Device.get_default ();
+
 	init_layer_properties ();
 	this.name = "StatusBar";
 	this.namespace = "StatusBar";
 
 	init_workspaces ();
 	init_clock ();
+	init_battery();
 }
+
 
 private void setup_event_handlers () {
 	power_button.clicked.connect (() => {
-			Morghulis.instance.toggle_window ("QuickSettings");
+			Geronimo.instance.toggle_window ("QuickSettings");
 		});
 
 	apps_button.clicked.connect (() => {
-			Morghulis.instance.toggle_window ("Runner");
+			Geronimo.instance.toggle_window ("Runner");
 		});
 
 	hyprland.notify["focused-client"].connect (() => {
@@ -76,7 +86,7 @@ public void init_layer_properties () {
 	GtkLayerShell.init_for_window (this);
 	GtkLayerShell.set_layer (this, GtkLayerShell.Layer.TOP);
 
-	GtkLayerShell.set_anchor (this, GtkLayerShell.Edge.BOTTOM, true);
+	GtkLayerShell.set_anchor (this, GtkLayerShell.Edge.TOP, true);
 	GtkLayerShell.set_anchor (this, GtkLayerShell.Edge.RIGHT, true);
 	GtkLayerShell.set_anchor (this, GtkLayerShell.Edge.LEFT, true);
 
@@ -95,10 +105,63 @@ private void focused_client () {
 	}
 }
 
+private void update_battery_icon(int displayed_percentage, bool charging) {
+    // On va stocker l'icône et le style ici
+	string battery_icon_name;
+    string css_class;
+
+    // On gère les différents niveaux de batterie
+    if (displayed_percentage <= 25) {
+        // Dans la sauce mon reuf
+        battery_icon_name = charging ? "battery-empty-charging" : "battery-empty-symbolic";
+        css_class = "low";
+    } else if (displayed_percentage <= 50) {
+        // Commence à être un peu chaud là
+        battery_icon_name = charging ? "battery-caution-charging" : "battery-caution-symbolic";
+        css_class = "medium";
+    } else if (displayed_percentage <= 75) {
+        // Tranquille, on est bien
+        battery_icon_name = charging ? "battery-good-charging" : "battery-good-symbolic";
+        css_class = "good";
+    } else {
+        // Full pepouse
+        battery_icon_name = charging ? "battery-full-charging" : "battery-full-symbolic";
+        css_class = "full";
+    }
+
+    // On applique tout ça
+    battery_icon.icon_name = battery_icon_name;
+	battery_icon.pixel_size = 30;
+    
+    // On vire les anciennes classes et on met la nouvelle
+    battery_icon.get_style_context().remove_class("low");
+    battery_icon.get_style_context().remove_class("medium");
+    battery_icon.get_style_context().remove_class("good");
+    battery_icon.get_style_context().remove_class("full");
+    battery_icon.get_style_context().add_class(css_class);
+}
+
+private void update_battery () {
+    var percentage = battery.percentage;
+    int displayed_percentage = (int) (percentage * 100);  // Convertir en pourcentage (0-100)
+    string[] css_classes = new string[0];
+	bool charging = battery.charging;
+	update_battery_icon(displayed_percentage, charging);
+	battery_label.label = displayed_percentage.to_string () + "%";
+}
+
+private void init_battery () {
+	update_battery ();
+	GLib.Timeout.add (30000, () => {
+			update_battery ();
+			return true;
+		});
+}
+
 // Clock methods
 private void update_clock () {
 	var clock_time = new DateTime.now_local ();
-	clock.label = clock_time.format ("%I:%M %p %b %e");
+	clock.label = clock_time.format ("%H:%M");
 }
 
 private void init_clock () {
@@ -113,23 +176,40 @@ private void init_clock () {
 private static int focused_workspace_id { get; private set; }
 
 private void init_workspaces () {
-	for (var i = 1; i <= 10; i++) {
-		var workspace_button = new Gtk.Button.with_label (wicons[i - 1]);
+	update_workspace_buttons();
+	setup_workspace_event_handlers ();
+	setup_workspace_scroll ();
+}
+
+private void update_workspace_buttons() {
+	// Remove existing buttons
+	foreach (var button in workspace_buttons) {
+		workspaces.remove(button);
+	}
+	workspace_buttons = new List<Gtk.Button>();
+
+	// Create buttons for all workspaces up to max_workspace_id
+	for (var i = 1; i <= max_workspace_id; i++) {
+		var workspace_button = new Gtk.Button.with_label (wicon);
 		connect_button_to_workspace (workspace_button, i);
 		workspace_button.valign = Gtk.Align.CENTER;
 		workspace_button.halign = Gtk.Align.CENTER;
 		workspaces.append (workspace_button);
 		workspace_buttons.append (workspace_button);
 	}
-	update_workspaces ();
-	setup_workspace_event_handlers ();
-	setup_workspace_scroll ();
+	update_workspaces();
 }
 
 private void setup_workspace_event_handlers () {
 	hyprland.notify["focused-workspace"].connect (update_workspaces);
-	hyprland.client_added.connect (update_workspaces);
-	hyprland.client_removed.connect (update_workspaces);
+	hyprland.client_added.connect (() => {
+		update_workspace_buttons();
+		update_workspaces();
+	});
+	hyprland.client_removed.connect (() => {
+		update_workspace_buttons();
+		update_workspaces();
+	});
 	hyprland.client_moved.connect (update_workspaces);
 }
 
@@ -144,22 +224,40 @@ private void setup_workspace_scroll () {
 }
 
 private void update_workspaces () {
-	focused_workspace_id = hyprland.focused_workspace.id;
+	focused_workspace_id = hyprland.focused_workspace != null ? hyprland.focused_workspace.id : 1;
 
 	int index = 0;
 	workspace_buttons.foreach ((button) => {
-			if (button != null) {
-				if (index + 1 == focused_workspace_id) {
-					button.set_css_classes (new string[] { "focused" });
-				} else if (workspace_has_windows (index + 1)) {
-					button.set_css_classes (new string[] { "has-windows" });
-				} else {
-					button.set_css_classes (new string[] { "empty" });
-				}
+		if (button != null) {
+			int workspace_number = index + 1;
+			if (workspace_number == focused_workspace_id) {
+				button.set_css_classes (new string[] { "focused" });
+			} else if (workspace_exists(workspace_number)) {
+				button.set_css_classes (new string[] { "occupied" });
+			} else {
+				button.set_css_classes (new string[] { "empty" });
 			}
-			index++;
-		});
+			button.visible = workspace_number <= get_highest_workspace_id();
+		}
+		index++;
+	});
 }
+
+private bool workspace_exists(int workspace_number) {
+	var workspace = hyprland.get_workspace(workspace_number);
+	return workspace != null && workspace.clients != null && workspace.clients.length() > 0;
+}
+
+private int get_highest_workspace_id() {
+	int highest_id = 1;
+	foreach (var workspace in hyprland.workspaces) {
+		if (workspace != null && workspace.id > highest_id) {
+			highest_id = workspace.id;
+		}
+	}
+	return int.max(highest_id, focused_workspace_id);
+}
+
 
 private void connect_button_to_workspace (Gtk.Button button, int workspace_number) {
 	var middle_click = new Gtk.GestureClick ();

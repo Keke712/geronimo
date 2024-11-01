@@ -1,0 +1,63 @@
+using Gtk 4.0;
+using AstalNetwork 0.1;
+using AstalBluetooth 0.1;
+using AstalNotifd 0.1;
+
+template $QuickPanel: Grid {
+
+    $QuickSettingsButton {
+        clicked => $network_clicked();
+        clicked_extras => $network_clicked_extras();
+
+        icon: bind $network_icon(template.network as <AstalNetwork.Network>.wifi.enabled) as <string>;
+        active: bind template.network as <AstalNetwork.Network>.wifi as <AstalNetwork.Wifi>.enabled;
+
+        layout {
+            row: 0;
+            column: 0;
+        }
+    }
+
+    $QuickSettingsButton {
+        icon: bind $active_vpn(template.network) as <string>;
+        clicked => $toggle_vpn();
+
+        layout {
+            row: 1;
+            column: 0;
+        }
+    }
+
+    $QuickSettingsButton {
+        clicked => $bluetooth_clicked();
+        clicked_extras => $bluetooth_clicked_extras();
+
+        icon: bind $bluetooth_icon_name(template.bluetooth as <AstalBluetooth.Bluetooth>.is-powered) as <string>;
+        active: bind template.bluetooth as <AstalBluetooth.Bluetooth>.is-powered;
+
+        layout {
+            row: 0;
+            column: 1;
+        }
+    }
+
+    $QuickSettingsButton {
+        layout {
+            row: 1;
+            column: 1;
+        }
+    }
+
+    $QuickSettingsButton {
+        layout {
+            row: 2;
+            column: 0;
+        }
+
+        icon: bind $dont_disturb_icon(template.notifd as <AstalNotifd.Notifd>.dont-disturb) as <string>;
+        inactive: bind template.notifd as <AstalNotifd.Notifd>.dont-disturb;
+        clicked => $toggle_disturb();
+        clicked_extras => $on_notif_arrow_clicked();
+    }
+
+}

@@ -19,6 +19,15 @@ template $StatusBar: Window {
         ]
       }
 
+      Label clock {
+        name: "clock";
+
+        styles [
+          "statusbar_label",
+          "statusbar_box"
+        ]
+      }
+
       Label client_label {
         label: "-----";
         halign: start;
@@ -49,13 +58,26 @@ template $StatusBar: Window {
         "right_box"
       ]
 
-      Label clock {
-        name: "clock";
+      Box battery_box {
+        spacing: 5;
 
         styles [
-          "statusbar_label",
-          "statusbar_box"
+          "battery_box"
         ]
+
+        Gtk.Image battery_icon {
+            icon-name: "battery-good-symbolic";
+            styles [
+                "battery_icon"
+            ]
+        }
+
+        Gtk.Label battery_label {
+            label: "0";
+            styles [
+                "battery_label"
+            ]
+        }
       }
 
       Box systray {}

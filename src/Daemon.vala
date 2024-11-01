@@ -1,15 +1,15 @@
 public class Daemon : Object {
 private SocketService service;
 public string socket_path { get; private set; }
-private Morghulis app;
+private Geronimo app;
 
-public Daemon (Morghulis app) {
+public Daemon (Geronimo app) {
 	this.app = app;
 }
 
 public void setup_socket_service () {
 	var rundir = GLib.Environment.get_user_runtime_dir ();
-	socket_path = @"$rundir/morghulis.sock";
+	socket_path = @"$rundir/geronimo.sock";
 
 	if (FileUtils.test (socket_path, GLib.FileTest.EXISTS)) {
 		try {

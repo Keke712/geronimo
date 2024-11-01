@@ -1,0 +1,39 @@
+using Gtk 4.0;
+
+template $NetworkPanel: Box {
+    orientation: vertical;
+    spacing: 6;
+
+    styles [
+        "network_panel"
+    ]
+
+    Box header {
+        orientation: horizontal;
+        spacing: 12;
+        margin-bottom: 6;
+
+        Label {
+            label: "Réseaux WiFi";
+            halign: start;
+            hexpand: true;
+            styles ["title-3"]
+        }
+
+        Button refresh_button {
+            icon-name: "view-refresh-symbolic";
+            valign: center;
+            styles ["circular", "flat"]
+        }
+    }
+
+    ScrolledWindow {
+        vexpand: true;
+        min-content-height: 200;
+
+        ListView networks_list {
+            enable-rubberband: false;
+            single-click-activate: true;
+        }
+    }
+}

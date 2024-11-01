@@ -7,13 +7,14 @@ scss_deps = files(
     '_StatusBar.scss',
     '_adw.scss',
     '_Runner.scss',
+    '_Popup.scss',
     'main.scss',
 )
 
 scss = custom_target(
     'scss',
     input: 'main.scss',
-    output: 'morghulis.css',
+    output: 'geronimo.css',
     command: [
         sass,
         '@INPUT@',

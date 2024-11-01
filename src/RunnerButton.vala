@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/com/github/ARKye03/morghulis/ui/RunnerButton.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/RunnerButton.ui")]
 public class RunnerButton : Gtk.ListBoxRow {
 
 public AstalApps.Application app {get; construct;}

@@ -7,7 +7,7 @@
 .runner_master_box {
     background-color: transparentize(#282C34, 0.2);
     border-radius: $master-border-radius;
-    border: 1px solid $dark_2;
+    border: none;
     padding: 10px;
     min-width: 555px;
 }
@@ -19,8 +19,8 @@
 
 .runner_button {
     padding: 10px;
-    background-color: $dark_3;
+    background-color: #212229;
     margin: 5px 0;
-    border-radius: $master-border-radius;
-
+    border-radius: $accent-color;
+    border: 1px $accent-color solid;
 }

@@ -1,0 +1,50 @@
+using Gtk 4.0;
+
+template $Popup: Window {
+    styles [
+        "popup_window"
+    ]
+
+    EventControllerKey {
+        key-released => $key_released();
+    }
+
+    Revealer {
+        transition-duration: 300;
+        transition-type: slide_up;
+        reveal-child: bind template.visible;
+
+        Box {
+            orientation: vertical;
+            spacing: 15;
+
+            styles [
+                "popup_window_box"
+            ]
+
+            Label title_label {
+                label: "";
+                halign: center;
+                styles ["title-2", "title_label"]
+            }
+
+            Label status_label {
+                label: "";
+                halign: center;
+                styles ["status_label"]
+            }
+
+            Entry entry {
+                primary-icon-name: "dialog-password-symbolic";
+                styles ["password-entry"]
+            }
+
+            Button button {
+                label: "Se connecter";
+                clicked => $confirm();
+                styles ["flat","popup-button"]
+            }
+        }
+    }
+
+}

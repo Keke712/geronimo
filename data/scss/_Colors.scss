@@ -1,6 +1,6 @@
 @import "adw";
 
-$master-border-color: #8839ef;
+$master-border-color: $accent_bg_color;
 
 // border: $borders_line-width $border_line_style $border_line_color;
 $borders_line-width: 1px;

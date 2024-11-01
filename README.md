@@ -1,4 +1,7 @@
 
+# Fork of Morghulis
+https://github.com/ARKye03/morghulis
+
 # Morghulis
 - [Morghulis](#morghulis)
   - [Requirements](#requirements)
@@ -24,12 +27,12 @@ Desktop Shell, created with GTK4, Blueprint and Vala.
 ## Usage
 
 ```shell
-git clone https://github.com/ARKye03/morghulis
+git clone https://github.com/Keke712/geronimo
 cd morghulis
 meson setup build
 # arch-meson build # Opinionated option for Arch Linux, recommended.
 ```
-or use/install a binary from [releases](https://github.com/ARKye03/morghulis/releases).
+or use/install a binary from [releases](https://github.com/Keke712/geronimo/releases).
 
 > [!WARNING]  
 > Still need the dynamic libraries installed in your system.
@@ -58,7 +61,7 @@ make nixdev # Build and run the desktop shell.
 ```
 or try the desktop shell with:
 ```shell
-nix run github:ARKye03/morghulis -- --help
+nix run github:Keke712/geronimo -- --help
 ```
 
 ## Features
@@ -69,6 +72,7 @@ nix run github:ARKye03/morghulis -- --help
     - [x] Focused Client
 - [x] Socket Service
 - [ ] [WIP] Quick Settings
+    - [x] Network Widget
     - [x] Media Player
 - [x] Apps Runner
     - [ ] Handle Hyprland Clients
@@ -81,10 +85,10 @@ nix run github:ARKye03/morghulis -- --help
 - [ ] Dynamic CSS
 
 ## Preview
-![Morghulis](public/morghulis.webp)
+![Geronimo](public/geronimo.png)
 
 > [!NOTE]  
-> The preview was made with adw-gtk One-Dark theme.
+> The preview was made with 'Arc-dark' theme.
 
 ## License
 

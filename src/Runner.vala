@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/com/github/ARKye03/morghulis/ui/Runner.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Runner.ui")]
 public class Runner : Gtk.Window, ILayerWindow {
 
 public AstalApps.Apps apps {get; construct set;}
@@ -32,6 +32,7 @@ public void update_list () {
 	this.app_list.invalidate_sort ();
 	this.app_list.invalidate_filter ();
 }
+
 [GtkCallback]
 public void launch_first_runner_button () {
 	RunnerButton selectedButton = (RunnerButton)this.app_list.get_row_at_index(0);
@@ -54,8 +55,8 @@ public void init_layer_properties () {
 	GtkLayerShell.set_keyboard_mode (this, GtkLayerShell.KeyboardMode.ON_DEMAND);
 
 	GtkLayerShell.set_namespace (this, "Runner");
-	GtkLayerShell.set_anchor (this, GtkLayerShell.Edge.BOTTOM, true);
-	GtkLayerShell.set_margin (this, GtkLayerShell.Edge.BOTTOM, 10);
+	GtkLayerShell.set_anchor (this, GtkLayerShell.Edge.TOP, true);
+	GtkLayerShell.set_margin (this, GtkLayerShell.Edge.TOP, 10);
 }
 
 public void present_layer () {

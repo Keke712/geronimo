@@ -3,10 +3,13 @@ subdir('scss')
 targets = files(
     'ui/Mpris.blp',
     'ui/QuickSettings.blp',
+    'ui/QuickPanel.blp',
     'ui/QuickSettingsButton.blp',
     'ui/Runner.blp',
     'ui/RunnerButton.blp',
     'ui/StatusBar.blp',
+    'ui/NetworkPanel.blp',
+    'ui/Utils/Popup.blp',
 )
 
 blueprints = custom_target(

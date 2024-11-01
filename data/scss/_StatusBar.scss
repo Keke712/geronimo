@@ -1,36 +1,56 @@
 @import "Colors";
 
 .StatusBar_Master {
-    background-color: transparentize(#282C34, 0.2);
-    min-height: 50px;
+    background-color: transparentize(#282C34, 1);
+    color: white;
+    min-height: 25px;
     border-radius: $master-border-radius;
     padding: 0 5px;
 }
 
 .statusbar_box {
     margin: 5px 0;
-    background-color: $dark_4;
-    border: 1px solid #363A4F;
+    background-color: transparent;
+    border: 1px solid $master-border-color;
     border-radius: $master-border-radius;
     padding: 0 10px;
 }
 
+.client_label {
+    border: none;
+}
+
+.workspaces {
+    border: none;
+}
+
 .workspaces button {
+    border: none;    
     font-size: 16px;
-    padding-right: 5px;
-    transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out; // ptite transition des familles
+    position: relative;  
+}
+
+.workspaces button:hover {
+    border-radius: 2em;
+    background: none;       /* on retire ce background de merde */
+    transform: scale(1.2);    /* BAM ça réduit de 5% quand tu passes dessus */
 }
 
 .focused {
-    color: $accent_color;
+    color: $master-border-color;
 }
 
-.has-windows {
-    color: $orange_3;
+.occupied {
+    color: $dark_4;
 }
 
 .empty {
-    color: $dark_1;
+    color: $dark_3;
+}
+
+.low {
+    color: rgba($color: rgb(255, 0, 81), $alpha: 1.0);
 }
 
 .StatusBar_label {
