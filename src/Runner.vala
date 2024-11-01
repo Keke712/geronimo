@@ -51,7 +51,7 @@ public void key_released (uint keyval) {
 
 public void init_layer_properties () {
 	GtkLayerShell.init_for_window (this);
-	GtkLayerShell.set_layer (this, GtkLayerShell.Layer.OVERLAY);
+	GtkLayerShell.set_layer (this, GtkLayerShell.Layer.TOP);
 	GtkLayerShell.set_keyboard_mode (this, GtkLayerShell.KeyboardMode.ON_DEMAND);
 
 	GtkLayerShell.set_namespace (this, "Runner");
