@@ -1,0 +1,68 @@
+using Gtk 4.0;
+
+template $BluetoothPanel: Box {
+    orientation: vertical;
+    spacing: 6;
+
+    styles [
+        "bluetooth_panel"
+    ]
+
+    Box header {
+        orientation: horizontal;
+        spacing: 12;
+        margin-bottom: 6;
+        margin-start: 12;
+        margin-end: 12;
+
+        Box {
+            orientation: horizontal;
+            spacing: 6;
+            halign: start;
+            hexpand: true;
+
+            Label {
+                label: "Bluetooth";
+                halign: start;
+                styles ["title-3"]
+            }
+
+            // Switch bluetooth_switch {
+            //     valign: center;
+            // }
+        }
+
+        Button back_button {
+            icon-name: "go-previous-symbolic";
+            valign: center;
+            styles ["circular", "flat"]
+        }
+
+        Button refresh_button {
+            icon-name: "view-refresh-symbolic";
+            valign: end;
+            styles ["circular", "flat"]
+        }
+    }
+
+    ScrolledWindow {
+        vexpand: true;
+        min-content-height: 200;
+
+        ListView devices_list {
+            enable-rubberband: false;
+            single-click-activate: true;
+            styles ["navigation-sidebar"]  // Pour avoir un style plus joli
+        }
+    }
+
+    // Status label en bas pour les erreurs/infos
+    Label status_label {
+        margin-top: 6;
+        margin-start: 12;
+        margin-end: 12;
+        margin-bottom: 6;
+        wrap: true;
+        styles ["caption"]  // Pour un style plus petit/discret
+    }
+}

@@ -205,6 +205,11 @@ public class QuickSettings : Gtk.Window, ILayerWindow {
         quick_settings_grid.attach(network_panel, 0, 0, 1, 1);
     }
 
+    private void setup_bluetooth_panel() {
+        BluetoothPanel bluetooth_panel = new BluetoothPanel();
+        quick_settings_grid.attach(bluetooth_panel, 0, 0, 1, 1);
+    }
+
     public void show_panel(string panel) {
         clear_panel();
 
@@ -212,7 +217,9 @@ public class QuickSettings : Gtk.Window, ILayerWindow {
             setup_quick_panel();
         } else if ( panel == "network" ) {
             setup_network_panel();
-        }    
+        } else if ( panel == "bluetooth" ) {
+            setup_bluetooth_panel();
+        }
     }
 
     private void on_player_added(AstalMpris.Player player) {
@@ -321,7 +328,7 @@ public class QuickSettings : Gtk.Window, ILayerWindow {
     [GtkCallback]
     public void lock() {
         try {
-            Process.spawn_command_line_async("loginctl lock-session");
+            Process.spawn_command_line_async("swaylock");
         } catch (Error e) {
             warning("Failed to lock: %s", e.message);
         }

@@ -9,6 +9,7 @@
 
         <file preprocess="xml-stripblanks">ui/QuickPanel.ui</file>
         <file preprocess="xml-stripblanks">ui/NetworkPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/BluetoothPanel.ui</file>
         <file preprocess="xml-stripblanks">ui/Utils/Popup.ui</file>
         
         <file preprocess="xml-stripblanks">ui/Runner.ui</file>

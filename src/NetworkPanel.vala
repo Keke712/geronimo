@@ -6,6 +6,9 @@ public class NetworkPanel : Gtk.Box {
     [GtkChild]
     private unowned Gtk.Button refresh_button;
 
+    [GtkChild]
+    private unowned Gtk.Button back_button;
+
     private AstalNetwork.Network network;
     private GLib.ListStore network_store;
     private Gtk.SingleSelection selection_model;
@@ -57,7 +60,7 @@ public class NetworkPanel : Gtk.Box {
                     var popup = Popup.get_instance();
                     Geronimo.instance.toggle_window("Popup");
 
-                    popup.set_title(selected_ap.ssid);
+                    popup.update_title(selected_ap.ssid);
 
                     this.visible = false;
                     quick_settings.show_panel("quick");
@@ -67,6 +70,10 @@ public class NetworkPanel : Gtk.Box {
                     stderr.printf("Erreur connexion: %s\n", e.message);
                 }
             }
+        });
+
+        back_button.clicked.connect(() => {
+            QuickSettings.get_instance().show_panel("quick");
         });
         
         refresh_button.clicked.connect(() => {

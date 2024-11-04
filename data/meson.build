@@ -9,6 +9,7 @@ targets = files(
     'ui/RunnerButton.blp',
     'ui/StatusBar.blp',
     'ui/NetworkPanel.blp',
+    'ui/BluetoothPanel.blp',
     'ui/Utils/Popup.blp',
 )
 

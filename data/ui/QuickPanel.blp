@@ -5,6 +5,9 @@ using AstalNotifd 0.1;
 
 template $QuickPanel: Grid {
 
+    column-spacing: 10;
+    row-spacing: 10;
+
     $QuickSettingsButton {
         clicked => $network_clicked();
         clicked_extras => $network_clicked_extras();
@@ -14,16 +17,6 @@ template $QuickPanel: Grid {
 
         layout {
             row: 0;
-            column: 0;
-        }
-    }
-
-    $QuickSettingsButton {
-        icon: bind $active_vpn(template.network) as <string>;
-        clicked => $toggle_vpn();
-
-        layout {
-            row: 1;
             column: 0;
         }
     }
@@ -44,6 +37,21 @@ template $QuickPanel: Grid {
     $QuickSettingsButton {
         layout {
             row: 1;
+            column: 0;
+        }
+
+        icon: bind $dont_disturb_icon(template.notifd as <AstalNotifd.Notifd>.dont-disturb) as <string>;
+        inactive: bind template.notifd as <AstalNotifd.Notifd>.dont-disturb;
+        clicked => $toggle_disturb();
+        clicked_extras => $on_notif_arrow_clicked();
+    }
+
+    $QuickSettingsButton {
+        icon: bind $active_vpn(template.network) as <string>;
+        clicked => $toggle_vpn();
+
+        layout {
+            row: 1;
             column: 1;
         }
     }
@@ -53,11 +61,6 @@ template $QuickPanel: Grid {
             row: 2;
             column: 0;
         }
-
-        icon: bind $dont_disturb_icon(template.notifd as <AstalNotifd.Notifd>.dont-disturb) as <string>;
-        inactive: bind template.notifd as <AstalNotifd.Notifd>.dont-disturb;
-        clicked => $toggle_disturb();
-        clicked_extras => $on_notif_arrow_clicked();
     }
 
 }

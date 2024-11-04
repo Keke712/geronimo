@@ -70,6 +70,7 @@ private void initialize_components () {
 private void setup_event_handlers () {
 	power_button.clicked.connect (() => {
 			Geronimo.instance.toggle_window ("QuickSettings");
+			QuickSettings.get_instance().show_panel ("quick");
 		});
 
 	apps_button.clicked.connect (() => {
@@ -106,48 +107,40 @@ private void focused_client () {
 }
 
 private void update_battery_icon(int displayed_percentage, bool charging) {
-    // On va stocker l'icône et le style ici
-	string battery_icon_name;
+    string battery_icon_name;
     string css_class;
 
-    // On gère les différents niveaux de batterie
     if (displayed_percentage <= 25) {
-        // Dans la sauce mon reuf
         battery_icon_name = charging ? "battery-empty-charging" : "battery-empty-symbolic";
         css_class = "low";
     } else if (displayed_percentage <= 50) {
-        // Commence à être un peu chaud là
         battery_icon_name = charging ? "battery-caution-charging" : "battery-caution-symbolic";
         css_class = "medium";
     } else if (displayed_percentage <= 75) {
-        // Tranquille, on est bien
         battery_icon_name = charging ? "battery-good-charging" : "battery-good-symbolic";
         css_class = "good";
     } else {
-        // Full pepouse
         battery_icon_name = charging ? "battery-full-charging" : "battery-full-symbolic";
         css_class = "full";
     }
 
-    // On applique tout ça
     battery_icon.icon_name = battery_icon_name;
-	battery_icon.pixel_size = 30;
-    
-    // On vire les anciennes classes et on met la nouvelle
-    battery_icon.get_style_context().remove_class("low");
-    battery_icon.get_style_context().remove_class("medium");
-    battery_icon.get_style_context().remove_class("good");
-    battery_icon.get_style_context().remove_class("full");
-    battery_icon.get_style_context().add_class(css_class);
+    battery_icon.pixel_size = 30;
+
+    var style_context = battery_icon.get_style_context();
+    style_context.remove_class("low");
+    style_context.remove_class("medium");
+    style_context.remove_class("good");
+    style_context.remove_class("full");
+    style_context.add_class(css_class);
 }
 
-private void update_battery () {
+private void update_battery() {
     var percentage = battery.percentage;
-    int displayed_percentage = (int) (percentage * 100);  // Convertir en pourcentage (0-100)
-    string[] css_classes = new string[0];
-	bool charging = battery.charging;
-	update_battery_icon(displayed_percentage, charging);
-	battery_label.label = displayed_percentage.to_string () + "%";
+    int displayed_percentage = (int) (percentage * 100);
+    bool charging = battery.charging;
+    update_battery_icon(displayed_percentage, charging);
+    battery_label.label = displayed_percentage.to_string() + "%";
 }
 
 private void init_battery () {

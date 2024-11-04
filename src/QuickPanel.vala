@@ -33,8 +33,6 @@ public class QuickPanel : Gtk.Grid {
         this.visible = false;
         // On chope l'instance et on balance la méthode
         QuickSettings.get_instance().show_panel("network");
-        
-        print("Network extras clicked\n");
     }
 
     [GtkCallback]
@@ -46,7 +44,9 @@ public class QuickPanel : Gtk.Grid {
 
     [GtkCallback]
     public void bluetooth_clicked_extras() {
-        print("bluetooth extras clicked\n");
+        this.visible = false;
+        // On chope l'instance et on balance la méthode
+        QuickSettings.get_instance().show_panel("bluetooth");
     }
 
     [GtkCallback]
@@ -59,9 +59,9 @@ public class QuickPanel : Gtk.Grid {
     [GtkCallback]
     public string active_vpn(AstalNetwork.Network? network) {
         if (network == null || network.wifi == null || network.wifi.active_connection == null) {
-            return "network-vpn-disabled-symbolic";
+            return "network-disconnect-symbolic";
         }
-        return network.wifi.active_connection.vpn ? "network-vpn-symbolic" : "network-vpn-disabled-symbolic";
+        return network.wifi.active_connection.vpn ? "curve-connector-symbolic" : "network-disconnect-symbolic";
     }
 
     [GtkCallback]
@@ -73,7 +73,7 @@ public class QuickPanel : Gtk.Grid {
     public string dont_disturb_icon(bool dnd) {
         return dnd
             ? "notifications-disabled-symbolic"
-            : "user-available-symbolic";
+            : "notifications-symbolic";
     }
 
     [GtkCallback]

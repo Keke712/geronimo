@@ -9,6 +9,7 @@ source_files = [
     'RunnerButton.vala',
     'Mpris.vala',
     'NetworkPanel.vala',
+    'BluetoothPanel.vala',
     'Utils/Layer.vala',
     'Utils/Popup.vala',
 ]

@@ -28,7 +28,6 @@
     border: none;    
     font-size: 16px;
     transition: all .2s ease-in-out; // ptite transition des familles
-    position: relative;  
 }
 
 .workspaces button:hover {
@@ -50,7 +49,7 @@
 }
 
 .low {
-    color: rgba($color: rgb(255, 0, 81), $alpha: 1.0);
+    color: rgba($color: rgb(191, 27, 27), $alpha: 1.0);
 }
 
 .StatusBar_label {

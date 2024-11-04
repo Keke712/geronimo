@@ -63,7 +63,7 @@ public class Popup : Gtk.Window, ILayerWindow {
     public string namespace { get; set; }
 
     // Méthode pour update le titre
-    public void set_title(string title) {
+    public void update_title(string title) {
         // Vérifie que le label existe avant de le modifier
         if (title_label != null) {
             title_label.label = title;
