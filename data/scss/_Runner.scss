@@ -5,8 +5,8 @@
 }
 
 .runner_master_box {
-    background-color: transparentize(#282C34, 0.2);
-    border-radius: $master-border-radius;
+    background-color: rgba(40, 44, 52, 0.8); /* Instead of transparentize() */
+    border-radius: $master-border-radius; /* Using GTK variable syntax */
     border: none;
     padding: 10px;
     min-width: 555px;
@@ -21,5 +21,5 @@
     padding: 10px;
     background-color: #212229;
     margin: 5px 0;
-    border-radius: $accent-color;
+    border-radius: 8px; /* Fixed value instead of $accent-color */
 }
