@@ -184,7 +184,7 @@ public class BluetoothPanel : Gtk.Box {
             yield wait_milliseconds(500);
             
             try {
-                device.disconnect_device();
+                yield device.disconnect_device();
             } catch (GLib.Error disconnect_error) {
                 print("Disconnect error: %s\n", disconnect_error.message);
             }
