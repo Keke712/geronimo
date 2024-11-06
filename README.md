@@ -73,9 +73,11 @@ nix run github:Keke712/geronimo -- --help
 - [x] Socket Service
 - [ ] [WIP] Quick Settings
     - [x] Network Widget
+    - [x] Bluetooth
+    - [x] Brightness
     - [x] Media Player
+    - [ ] Notifications
 - [x] Apps Runner
-    - [ ] Handle Hyprland Clients
 - [ ] Notifications
     - [ ] Center
     - [ ] Popup
