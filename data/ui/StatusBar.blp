@@ -10,7 +10,7 @@ template $StatusBar: Window {
       spacing: 10;
 
       Button apps_button {
-        label: "󰀻";
+        icon-name: "drag-surface";
         name: "apps_button";
 
         styles [
@@ -32,7 +32,7 @@ template $StatusBar: Window {
         label: "-----";
         halign: start;
         ellipsize: end;
-        max-width-chars: 20;
+        max-width-chars: 35;
 
         styles [
           "client_label",
@@ -83,7 +83,7 @@ template $StatusBar: Window {
       Box systray {}
 
       Button power_button {
-        label: "󰐥";
+        icon-name: "application-menu";
         name: "power_button";
 
         styles [
