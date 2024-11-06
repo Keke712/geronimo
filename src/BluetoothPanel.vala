@@ -18,6 +18,9 @@ public class BluetoothPanel : Gtk.Box {
     private GLib.ListStore devices_store;
     private Gtk.SingleSelection selection_model;
 
+    // stockage appareils connectés
+    private GLib.HashTable<string, AstalBluetooth.Device> connected_devices;
+
     public BluetoothPanel() {
         Object();
     }
@@ -28,8 +31,9 @@ public class BluetoothPanel : Gtk.Box {
         bluetooth = AstalBluetooth.get_default();
         adapter = bluetooth.adapter;
         
-        devices_store = new GLib.ListStore(typeof(AstalBluetooth.Device));
+        devices_store = new GLib.ListStore(typeof(GLib.Object));
         selection_model = new Gtk.SingleSelection(devices_store);
+        connected_devices = new GLib.HashTable<string, AstalBluetooth.Device>(str_hash, str_equal);
         
         setup_device_list();
         setup_signals();
@@ -40,17 +44,30 @@ public class BluetoothPanel : Gtk.Box {
         }
     }
 
+    // Classe pour les headers
+    private class HeaderItem : Object {
+        public string title { get; construct; }
+        
+        public HeaderItem(string title) {
+            Object(title: title);
+        }
+    }
+
     private void setup_device_list() {
         var factory = new Gtk.SignalListItemFactory();
+        
         factory.setup.connect((item) => {
             var list_item = item as Gtk.ListItem;
-            var box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 6);
-            box.margin_start = 12;
-            box.margin_end = 12;
+            var box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 6) {
+                margin_start = 12,
+                margin_end = 12
+            };
             
-            var icon = new Gtk.Image.from_icon_name("bluetooth-symbolic");
-            var label = new Gtk.Label("");
-            label.halign = Gtk.Align.START;
+            var icon = new Gtk.Image();
+            var label = new Gtk.Label("") {
+                halign = Gtk.Align.START,
+                hexpand = true
+            };
             
             box.append(icon);
             box.append(label);
@@ -61,30 +78,51 @@ public class BluetoothPanel : Gtk.Box {
             var list_item = item as Gtk.ListItem;
             var device = list_item.item as AstalBluetooth.Device;
             var box = list_item.child as Gtk.Box;
-            var label = box.get_last_child() as Gtk.Label;
-            
-            string status = device.paired ? " (Appairé)" : device.connected ? " (Connecté)" : "";
-            label.label = "%s%s".printf(device.name ?? device.address, status);
             
             var icon = box.get_first_child() as Gtk.Image;
-            switch (device.icon) {
-                case "audio-card":
-                    icon.icon_name = "audio-headphones-symbolic";
-                    break;
-                case "input-keyboard":
-                    icon.icon_name = "input-keyboard-symbolic";
-                    break;
-                case "input-mouse":
-                    icon.icon_name = "input-mouse-symbolic";
-                    break;
-                default:
-                    icon.icon_name = "bluetooth-symbolic";
-                    break;
+            var label = icon.get_next_sibling() as Gtk.Label;
+            
+            // Si c'est un header
+            if (list_item.item is HeaderItem) {
+                var header = list_item.item as HeaderItem;
+                label.label = header.title;
+                label.add_css_class("separator-label");
+                icon.visible = false;
+                
+                
+                return;
             }
+            
+            // Sinon c'est un appareil normal
+            icon.visible = true;
+            string status = get_device_status(device);
+            label.label = "%s%s".printf(device.name ?? device.address, status);
+            icon.icon_name = get_device_icon(device);
         });
         
         devices_list.model = selection_model;
         devices_list.factory = factory;
+    }
+    
+    private string get_device_status(AstalBluetooth.Device device) {
+        if (device.paired) return " (Appairé)";
+        if (device.connected) return " (Connecté)";
+        return "";
+    }
+    
+    private string get_device_icon(AstalBluetooth.Device device) {
+        if (device.connected) return "stateshape";
+        
+        switch (device.icon) {
+            case "audio-card":
+                return "new-audio-alarm-symbolic";
+            case "input-keyboard":
+                return "input-keyboard-virtual-show-symbolic";
+            case "input-mouse":
+                return "input-mouse-click-middle-symbolic";
+            default:
+                return "network-bluetooth";
+        }
     }
 
     private void setup_signals() {
@@ -133,38 +171,76 @@ public class BluetoothPanel : Gtk.Box {
                     status_label.label = "Erreur de connexion : %s".printf(e.message);
                 }
             } else {
-                status_label.label = "Déconnexion en cours...";
-                try {
-                    yield wait_milliseconds(500);
-                    device.disconnect_profile("*");
-                    yield wait_milliseconds(1000);
-                    
-                    status_label.label = "Appareil déconnecté !";
-                    yield scan_devices();
-                } catch (Error e) {
-                    status_label.label = "Erreur de déconnexion : %s".printf(e.message);
-                }
+                device_disconnect.begin(device);
             }
         } catch (Error e) {
             status_label.label = "Erreur : %s".printf(e.message);
         }
     }
 
+    private async void device_disconnect(AstalBluetooth.Device device) {
+        status_label.label = "Déconnexion en cours...";
+        try {
+            yield wait_milliseconds(500);
+            
+            try {
+                device.disconnect_device();
+            } catch (GLib.Error disconnect_error) {
+                print("Disconnect error: %s\n", disconnect_error.message);
+            }
+            
+            yield wait_milliseconds(1000);
+            status_label.label = "Appareil déconnecté !";
+            yield scan_devices();
+        } catch (Error e) {
+            status_label.label = "Erreur de déconnexion : %s".printf(e.message);
+        }
+    }
+
     private async void scan_devices() {
         if (!bluetooth.is_powered) return;
         
-        adapter.start_discovery();
-        devices_store.remove_all();
-        
-        // On attend un peu que le scan se fasse
-        yield wait_milliseconds(1000);
-        
-        var available_devices = bluetooth.devices;
-        foreach (var device in available_devices) {
-            devices_store.append(device);
+        try {
+            if (adapter.discovering) {
+                adapter.stop_discovery();
+                yield wait_milliseconds(500);
+            }
+            
+            adapter.start_discovery();
+            devices_store.remove_all();
+            yield wait_milliseconds(1000);
+            
+            var connected = new GenericArray<AstalBluetooth.Device>();
+            var disconnected = new GenericArray<AstalBluetooth.Device>();
+            
+            foreach (var device in bluetooth.devices) {
+                if (device.connected) {
+                    connected.add(device);
+                } else {
+                    disconnected.add(device);
+                }
+            }
+            
+            // Ajouter le header pour les appareils connectés si il y en a
+            if (connected.length > 0) {
+                devices_store.append(new HeaderItem("Appareils connectés"));
+                foreach (var device in connected.data) {
+                    devices_store.append(device);
+                }
+            }
+            
+            // Ajouter le header pour les appareils non connectés si il y en a
+            if (disconnected.length > 0) {
+                devices_store.append(new HeaderItem("Appareils disponibles"));
+                foreach (var device in disconnected.data) {
+                    devices_store.append(device);
+                }
+            }
+            
+            status_label.label = "Recherche d'appareils...";
+        } catch (Error e) {
+            status_label.label = "Erreur lors du scan : %s".printf(e.message);
         }
-
-        status_label.label = "Recherche d'appareils...";
     }
 
     // Helper pour attendre en async
