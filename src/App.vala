@@ -29,6 +29,7 @@ public override void activate () {
 	windows.append (new StatusBar (this));
 	windows.append (new QuickSettings ());
 	windows.append (new Runner ());
+	windows.append (new OnScreenDisplay ());
 	windows.append (new Popup ());
 
 	foreach (var window in windows) {

@@ -1,0 +1,12 @@
+@import "Colors";
+
+.OnScreenDisplay_Window {
+    all: unset;
+}
+
+.OnScreenDisplay {
+    background-color: $window_bg_color;
+    border: none;
+    padding: 10px 0;
+    min-height: 200px;
+}

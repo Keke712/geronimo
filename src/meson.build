@@ -10,6 +10,7 @@ source_files = [
     'Mpris.vala',
     'NetworkPanel.vala',
     'BluetoothPanel.vala',
+    'OnScreenDisplay.vala',
     'Utils/Layer.vala',
     'Utils/Popup.vala',
 ]
