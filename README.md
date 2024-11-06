@@ -2,8 +2,8 @@
 # Fork of Morghulis
 https://github.com/ARKye03/morghulis
 
-# Morghulis
-- [Morghulis](#morghulis)
+# Geronimo
+- [Geronimo](#geronimo)
   - [Requirements](#requirements)
   - [Usage](#usage)
     - [Development](#development)
@@ -48,7 +48,7 @@ make
 
 ```shell
 meson install -C build
-morghulis --help
+geronimo --help
 ```
 
 ### Nix
@@ -68,14 +68,16 @@ nix run github:Keke712/geronimo -- --help
 
 - [x] Status Bar
     - [x] Workspace Switcher
-    - [x] Volume Controller
+    - [x] Battery
     - [x] Focused Client
 - [x] Socket Service
-- [ ] [WIP] Quick Settings
-    - [x] Network Widget
+- [ ] Quick Settings
+    - [] Network Widget
+    - [x] Bluetooth Widget
+    - [x] Brightness
+    - [x] Volume
     - [x] Media Player
 - [x] Apps Runner
-    - [ ] Handle Hyprland Clients
 - [ ] Notifications
     - [ ] Center
     - [ ] Popup
@@ -85,7 +87,7 @@ nix run github:Keke712/geronimo -- --help
 - [ ] Dynamic CSS
 
 ## Preview
-![Geronimo](public/geronimo.png)
+![Geronimo](public/geronimo.webp)
 
 > [!NOTE]  
 > The preview was made with 'Arc-dark' theme.
