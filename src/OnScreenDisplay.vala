@@ -18,8 +18,8 @@ public void init_layer_properties () {
 	init_for_window (this);
 	set_layer (this, Layer.OVERLAY);
 	set_namespace (this, "OnScreenDisplay");
-	set_anchor (this, Edge.LEFT, true);
-	set_margin (this, Edge.LEFT, 5);
+	set_anchor (this, Edge.TOP, true);
+	set_margin (this, Edge.TOP, 5);
 }
 
 public void present_layer () {

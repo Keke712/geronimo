@@ -12,9 +12,9 @@ template $OnScreenDisplay: Window {
     //     reveal-child: bind template.visible;
     Stack { // Stack for volume and brightness
         Box volume_osd { // Abstract this to a component... If needed(3 or more osds)
-            orientation: vertical;
+            orientation: horizontal;
             spacing: 10;
-            vexpand: true;
+            hexpand: true;
 
             styles [
                 "OnScreenDisplay"
@@ -25,9 +25,9 @@ template $OnScreenDisplay: Window {
             }
 
             Scale {
-                vexpand: true;
-                orientation: vertical;
-                inverted: true;
+                hexpand: true;
+                orientation: horizontal;
+                inverted: false;
 
                 adjustment: Adjustment vol_adjust {
                     lower: 0;
