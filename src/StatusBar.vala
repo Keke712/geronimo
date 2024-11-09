@@ -102,10 +102,10 @@ private void setup_event_handlers () {
 	//  	});
 }
 
-[GtkCallback]
-public string current_volume (double volume) {
-	return @"$(Math.round(volume * 100))%";
-}
+//  [GtkCallback]
+//  public string current_volume (double volume) {
+//  	return @"$(Math.round(volume * 100))%";
+//  }
 
 // Layer Shell methods
 public void init_layer_properties () {
