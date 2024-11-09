@@ -25,10 +25,22 @@ public unowned Gtk.Box workspaces;
 public unowned Gtk.Button apps_button;
 
 [GtkChild]
-public unowned Gtk.Label client_label;
+public unowned Gtk.Box dynamic_box;
 
 [GtkChild]
 public unowned Gtk.Label clock;
+
+[GtkChild]
+public unowned Gtk.Box volume_osd;
+
+[GtkChild]
+public unowned Gtk.Adjustment vol_adjust;
+
+[GtkChild]
+public unowned Gtk.Box backlight_osd;
+
+[GtkChild]
+public unowned Gtk.Adjustment back_adjust;
 
 [GtkChild]
 public unowned Gtk.Label battery_label;
@@ -42,6 +54,7 @@ public unowned Gtk.Image battery_icon;
 // Workspace icon
 private static string wicon = "󰝥 ";
 private int max_workspace_id = 10;  // Set a maximum number of workspaces
+private bool is_initialized = false;
 
 public StatusBar (Gtk.Application app) {
 	Object (application: app);
@@ -64,8 +77,15 @@ private void initialize_components () {
 	init_workspaces ();
 	init_clock ();
 	init_battery();
-}
+	init_island();
 
+	GLib.Timeout.add(1000, () => {
+		is_initialized = true;
+		print("Initialized\n");
+		return false;
+	});
+	
+}
 
 private void setup_event_handlers () {
 	power_button.clicked.connect (() => {
@@ -77,9 +97,14 @@ private void setup_event_handlers () {
 			Geronimo.instance.toggle_window ("Runner");
 		});
 
-	hyprland.notify["focused-client"].connect (() => {
-			focused_client ();
-		});
+	//  hyprland.notify["focused-client"].connect (() => {
+	//  		focused_client ();
+	//  	});
+}
+
+[GtkCallback]
+public string current_volume (double volume) {
+	return @"$(Math.round(volume * 100))%";
 }
 
 // Layer Shell methods
@@ -99,12 +124,7 @@ public void present_layer () {
 	this.present ();
 }
 
-// Client focus method
-private void focused_client () {
-	if (hyprland.focused_client != null) {
-		client_label.label = hyprland.focused_client.title;
-	}
-}
+// Battery methods
 
 private void update_battery_icon(int displayed_percentage, bool charging) {
     string battery_icon_name;
@@ -113,10 +133,10 @@ private void update_battery_icon(int displayed_percentage, bool charging) {
     if (displayed_percentage <= 25) {
         battery_icon_name = charging ? "battery-empty-charging" : "battery-empty-symbolic";
         css_class = "low";
-    } else if (displayed_percentage <= 50) {
+    } else if (displayed_percentage < 50) {
         battery_icon_name = charging ? "battery-caution-charging" : "battery-caution-symbolic";
         css_class = "medium";
-    } else if (displayed_percentage <= 75) {
+    } else if (displayed_percentage < 80) {
         battery_icon_name = charging ? "battery-good-charging" : "battery-good-symbolic";
         css_class = "good";
     } else {
@@ -127,12 +147,11 @@ private void update_battery_icon(int displayed_percentage, bool charging) {
     battery_icon.icon_name = battery_icon_name;
     battery_icon.pixel_size = 30;
 
-    var style_context = battery_icon.get_style_context();
-    style_context.remove_class("low");
-    style_context.remove_class("medium");
-    style_context.remove_class("good");
-    style_context.remove_class("full");
-    style_context.add_class(css_class);
+    battery_icon.remove_css_class("low");
+    battery_icon.remove_css_class("medium");
+    battery_icon.remove_css_class("good");
+    battery_icon.remove_css_class("full");
+    battery_icon.add_css_class(css_class);
 }
 
 private void update_battery() {
@@ -152,6 +171,8 @@ private void init_battery () {
 }
 
 // Clock methods
+private bool using_clock = true;
+
 private void update_clock () {
 	var clock_time = new DateTime.now_local ();
 	clock.label = clock_time.format ("%H:%M");
@@ -160,12 +181,48 @@ private void update_clock () {
 private void init_clock () {
 	update_clock ();
 	GLib.Timeout.add (30000, () => {
-			update_clock ();
+			if (using_clock) { update_clock (); }
 			return true;
 		});
 }
 
+// Dynamic island methods
+
+private uint hide_timeout_id = 0;
+
+private void init_island () {
+	speaker.bind_property ("volume", vol_adjust, "value", GLib.BindingFlags.BIDIRECTIONAL | GLib.BindingFlags.SYNC_CREATE);
+    // Connecte l'événement sans paramètres
+	speaker.notify["volume"].connect(() => {
+		if (is_initialized) {
+        	clock.visible = false;
+			volume_osd.visible = true;
+			handle_timeout();
+		}
+    });
+}
+
+private void handle_timeout() {
+	// Remove the existing timeout if it exists
+	if (hide_timeout_id != 0) {
+		GLib.Source.remove(hide_timeout_id);
+		hide_timeout_id = 0;
+	}
+	
+	// Set a new timeout
+	hide_timeout_id = GLib.Timeout.add(3000, () => {
+        // Définition d'un nouveau timeout pour masquer le volume
+		clock.visible = true;
+        volume_osd.visible = false;
+		
+
+		hide_timeout_id = 0;
+		return false;
+	});
+}
+
 // Workspace methods
+
 private static int focused_workspace_id { get; private set; }
 
 private void init_workspaces () {

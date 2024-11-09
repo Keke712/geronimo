@@ -1,4 +1,5 @@
 using Gtk 4.0;
+using AstalWp 0.1;
 
 template $StatusBar: Window {
   styles [
@@ -7,7 +8,7 @@ template $StatusBar: Window {
 
   CenterBox {
     start-widget: Box {
-      spacing: 10;
+      spacing: 5;
 
       Button apps_button {
         icon-name: "drag-surface";
@@ -19,36 +20,112 @@ template $StatusBar: Window {
         ]
       }
 
-      Label clock {
-        name: "clock";
-
-        styles [
-          "statusbar_label",
-          "statusbar_box"
-        ]
-      }
-
-      Label client_label {
-        label: "-----";
+      Box workspaces {
+        name: "workspaces";
         halign: start;
-        ellipsize: end;
-        max-width-chars: 35;
 
         styles [
-          "client_label",
+          "workspaces",
           "statusbar_box"
         ]
       }
+
     };
 
-    center-widget: Box workspaces {
-      name: "workspaces";
-      spacing: 5;
+    center-widget: Box dynamic_box {
+        halign: center;
+        styles [
+            "dynamic_box"
+        ]
 
-      styles [
-        "workspaces",
-        "statusbar_box"
-      ]
+        Label clock {
+            name: "clock";
+            width-request: 200;
+            visible: true;
+        }
+
+        Box volume_osd {
+            orientation: horizontal;
+            visible: false;
+            width-request: 200;
+            // styles [ "blbl" ]
+
+            
+            Box {
+                orientation: horizontal;
+                halign: end;
+                width-request: 20;
+
+                Image {
+                    icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
+                    margin-start: 10;
+                    // styles [ "blbl" ]
+                }
+            }
+
+            Box {
+                orientation: horizontal;
+                hexpand: true;
+                halign: start;
+                width-request: 180;
+
+                Scale {
+                    hexpand: true;
+                    orientation: horizontal;
+                    inverted: false;
+                    margin-start: 10;
+                    margin-end: 10;
+                    styles [ "geronimo_slider" ]
+
+                    adjustment: Adjustment vol_adjust {
+                        lower: 0;
+                        upper: 1;
+                    };
+                }
+            }
+        }
+
+        Box backlight_osd {
+            orientation: horizontal;
+            visible: false;
+            width-request: 200;
+            // styles [ "blbl" ]
+
+            
+            Box {
+                orientation: horizontal;
+                halign: end;
+                width-request: 20;
+
+                Image {
+                    icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
+                    margin-start: 10;
+                    // styles [ "blbl" ]
+                }
+            }
+
+            Box {
+                orientation: horizontal;
+                hexpand: true;
+                halign: start;
+                width-request: 180;
+
+                Scale {
+                    hexpand: true;
+                    orientation: horizontal;
+                    inverted: false;
+                    margin-start: 10;
+                    margin-end: 10;
+                    styles [ "geronimo_slider" ]
+
+                    adjustment: Adjustment back_adjust {
+                        lower: 0;
+                        upper: 1;
+                    };
+                }
+            }
+        }
+
     };
 
     end-widget: Box right_box {
