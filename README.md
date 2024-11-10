@@ -28,7 +28,7 @@ Desktop Shell, created with GTK4, Blueprint and Vala.
 
 ```shell
 git clone https://github.com/Keke712/geronimo
-cd morghulis
+cd geronimo
 meson setup build
 # arch-meson build # Opinionated option for Arch Linux, recommended.
 ```
@@ -72,17 +72,19 @@ nix run github:Keke712/geronimo -- --help
     - [x] Focused Client
 - [x] Socket Service
 - [ ] Quick Settings
-    - [] Network Widget
+    - [X] Network Widget
     - [x] Bluetooth Widget
     - [x] Brightness
     - [x] Volume
     - [x] Media Player
-- [x] Apps Runner
+- [ ] Runner
+    - [x] Apps
+    - [ ] Calculator
 - [ ] Notifications
     - [ ] Center
     - [ ] Popup
 - [ ] OnScreenDisplay
-  - [ ] Audio
+  - [X] Audio
   - [ ] Brightness
 - [ ] Dynamic CSS
 
