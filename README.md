@@ -79,7 +79,8 @@ nix run github:Keke712/geronimo -- --help
     - [x] Media Player
 - [ ] Runner
     - [x] Apps
-    - [ ] Calculator
+    - [X] Calculator
+    - [ ] File finder
 - [ ] Notifications
     - [ ] Center
     - [ ] Popup
