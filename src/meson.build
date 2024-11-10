@@ -12,6 +12,7 @@ source_files = [
     'BluetoothPanel.vala',
     'Utils/Layer.vala',
     'Utils/Popup.vala',
+    'Utils/Calculator.vala',
 ]
 
 executable(

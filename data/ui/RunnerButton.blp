@@ -21,13 +21,13 @@ template $RunnerButton: ListBoxRow {
         Box {
             orientation: vertical;
 
-            Label {
+            Label title_label {
                 halign: start;
                 label: bind template.app as <AstalApps.Application>.name;
                 ellipsize: end;
             }
 
-            Label {
+            Label desc_label {
                 halign: start;
                 label: bind template.app as <AstalApps.Application>.description;
                 ellipsize: end;
