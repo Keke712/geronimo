@@ -5,7 +5,7 @@
 }
 
 .quick_settings_grid_box {
-    background-color: rgba(40, 44, 52, 0.8); /* Instead of transparentize(#282C34, 0.2) */
+    background-color: rgba($color: #000, $alpha: 0.3);
     padding: 10px;
 }
 
@@ -17,17 +17,18 @@
 }
 
 .quick_settings_button button {
+    border-radius: 0;
     border: none;
 }
 
 .quick_settings_button-active {
     border: none;
-    background-color: $accent_color; /* Assuming accent_color is defined in Colors.css */
+    background-color: $accent_color;
     transition: background-color 300ms ease-in-out;
 }
 
 .quick_settings_button-active button:hover {
-    background-color: $dark_4; /* Assuming dark_4 is defined in Colors.css */
+    background-color: rgba($color: #000000, $alpha: 0.5);
 }
 
 .separator-label {
