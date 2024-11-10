@@ -3,7 +3,8 @@ using AstalHyprland;
 using GtkLayerShell;
 
 [GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/StatusBar.ui")]
-public class StatusBar : Gtk.Window, ILayerWindow {
+public class StatusBar : Astal.Window {
+
 // Properties
 private AstalMpris.Mpris mpris { get; set; }
 private AstalHyprland.Hyprland hyprland { get; set; }
@@ -56,35 +57,34 @@ private static string wicon = "󰝥 ";
 private int max_workspace_id = 10;  // Set a maximum number of workspaces
 private bool is_initialized = false;
 
-public StatusBar (Gtk.Application app) {
-	Object (application: app);
-	initialize_components ();
-	setup_event_handlers ();
+public StatusBar () {
+	Object (
+		anchor: Astal.WindowAnchor.LEFT | Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT
+	);
+
+	auto_exclusive_zone_enable(this); // make this bar a bar
+    
+    present();
 }
 
-// Initialization methods
-private void initialize_components () {
+construct {
 	speaker = AstalWp.get_default ().audio.default_speaker;
 	mpris = AstalMpris.Mpris.get_default ();
 	hyprland = AstalHyprland.Hyprland.get_default ();
-
 	battery = AstalBattery.Device.get_default ();
-
-	init_layer_properties ();
-	this.name = "StatusBar";
-	this.namespace = "StatusBar";
 
 	init_workspaces ();
 	init_clock ();
 	init_battery();
 	init_island();
 
+	setup_event_handlers();
+
 	GLib.Timeout.add(1000, () => {
 		is_initialized = true;
 		print("Initialized\n");
 		return false;
 	});
-	
 }
 
 private void setup_event_handlers () {
@@ -96,31 +96,9 @@ private void setup_event_handlers () {
 	apps_button.clicked.connect (() => {
 			Geronimo.instance.toggle_window ("Runner");
 		});
-
-	//  hyprland.notify["focused-client"].connect (() => {
-	//  		focused_client ();
-	//  	});
-}
-
-// Layer Shell methods
-public void init_layer_properties () {
-	GtkLayerShell.init_for_window (this);
-	GtkLayerShell.set_layer (this, GtkLayerShell.Layer.TOP);
-
-	GtkLayerShell.set_anchor (this, GtkLayerShell.Edge.TOP, true);
-	GtkLayerShell.set_anchor (this, GtkLayerShell.Edge.RIGHT, true);
-	GtkLayerShell.set_anchor (this, GtkLayerShell.Edge.LEFT, true);
-
-	GtkLayerShell.set_namespace (this, "StatusBar");
-	GtkLayerShell.auto_exclusive_zone_enable (this);
-}
-
-public void present_layer () {
-	this.present ();
 }
 
 // Battery methods
-
 private void update_battery_icon(int displayed_percentage, bool charging) {
     string battery_icon_name;
     string css_class;

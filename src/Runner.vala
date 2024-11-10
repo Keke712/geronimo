@@ -1,5 +1,8 @@
+using GtkLayerShell;
+
 [GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Runner.ui")]
-public class Runner : Gtk.Window, ILayerWindow {
+public class Runner : Astal.Window {
+
     public AstalApps.Apps apps { get; construct set; }
 
     [GtkChild]
@@ -29,15 +32,14 @@ public class Runner : Gtk.Window, ILayerWindow {
         
         // Vérifie si le premier caractère est un chiffre ou une parenthèse ouvrante
         if (text[0].isdigit() || text[0] == '(') {
-            // Vérifie que le texte ne contient que des caractères valides pour une expression
-            string valid_chars = "0123456789+-*/().";
+            string valid_chars = "0123456789+-*/^().";
             for (int i = 0; i < text.length; i++) {
                 unichar c = text.get_char(i);
                 if (!c.isspace() && !valid_chars.contains(c.to_string())) {
                     return false;
                 }
             }
-
+    
             return true;
         }
         return false;
@@ -149,25 +151,17 @@ public class Runner : Gtk.Window, ILayerWindow {
         }
     }
 
-    public void init_layer_properties() {
-        GtkLayerShell.init_for_window(this);
-        GtkLayerShell.set_layer(this, GtkLayerShell.Layer.TOP);
-        GtkLayerShell.set_keyboard_mode(this, GtkLayerShell.KeyboardMode.ON_DEMAND);
-
-        GtkLayerShell.set_namespace(this, "Runner");
-        GtkLayerShell.set_anchor(this, GtkLayerShell.Edge.TOP, true);
-        GtkLayerShell.set_margin(this, GtkLayerShell.Edge.TOP, 10);
+    public Runner() {
+        Object (
+            anchor: Astal.WindowAnchor.TOP,
+            margin_top: 20
+        );
     }
-
-    public void present_layer() {
-        this.present();
-        this.visible = false;
-    }
-
-    public string namespace { get; set; }
 
     construct {
-        init_layer_properties();
+        // Dans le constructeur ou le bloc construct
+        GtkLayerShell.init_for_window(this);
+        GtkLayerShell.set_keyboard_mode(this, GtkLayerShell.KeyboardMode.EXCLUSIVE);
 
         this.apps = new AstalApps.Apps();
 

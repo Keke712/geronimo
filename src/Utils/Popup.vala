@@ -1,6 +1,6 @@
 
 [GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Utils/Popup.ui")]
-public class Popup : Gtk.Window, ILayerWindow {
+public class Popup : Astal.Window {
     // créer une instance statique de la classe QuickSettings
     private static Popup? instance;
 

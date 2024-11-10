@@ -1,58 +1,45 @@
-public class Geronimo : Adw.Application {
-public static Geronimo instance { get; private set; }
-private List<ILayerWindow> windows = new List<ILayerWindow> ();
+public class Geronimo : Astal.Application {
+private string socket_path { get; private set; }
 private bool css_loaded = false;
-private Daemon daemon;
 
-public static void main (string[] args) {
-	instance = new Geronimo ();
-	instance.init_types ();
-	instance.run (args);
+public static Astal.Application instance;
+
+public override void request (string msg, SocketConnection conn) {
+	AstalIO.write_sock.begin(conn, @"missing response implementaton on $instance_name");
 }
 
 construct {
-	application_id = "com.github.keke712.geronimo";
-	flags = ApplicationFlags.HANDLES_COMMAND_LINE;
+	instance_name = "geronimo";
+	try {
+		acquire_socket();
+	}catch (Error e) {
+		printerr("%s", e.message);
+	}
+	instance = this;
 }
 
-private void init_types () {
-	typeof (QuickSettings).ensure ();
-	typeof (QuickSettingsButton).ensure ();
+public Geronimo() {
+	Object(
+		application_id: "com.github.keke712.geronimo",
+		flags: ApplicationFlags.HANDLES_COMMAND_LINE
+	);
 }
 
-public override void activate () {
+[DBus(visible = false)]
+public override void activate(){
+	base.activate();
+
 	if (!css_loaded) {
-		load_css ();
+		load_css();
 		css_loaded = true;
 	}
 
-	windows.append (new StatusBar (this));
-	windows.append (new QuickSettings ());
-	windows.append (new Runner ());
-	windows.append (new Popup ());
+	add_window (new StatusBar ());
+	add_window (new QuickSettings ());
+	add_window (new Runner ());
+	add_window (new Popup ());
 
-	foreach (var window in windows) {
-		window.present_layer ();
-	}
-
-	daemon = new Daemon (this);
-	daemon.setup_socket_service ();
-}
-
-public bool toggle_window (string name) {
-	ILayerWindow? w = null;
-	foreach (var window in windows) {
-		if (window.name.down () == name.down ()) {
-			w = window;
-			break;
-		}
-	}
-	if (w != null) {
-		w.visible = !w.visible;
-		return true;
-	}
-	printerr (@"Window $name not found.\n");
-	return false;
+	this.hold();
 }
 
 void load_css () {
@@ -71,8 +58,7 @@ public string process_command (string command) {
 	case "--toggle-window" :
 		if (args.length > 1) {
 			string window_name = args[1];
-			bool result = toggle_window (window_name);
-			response = result ? @"$window_name toggled" : @"Failed to toggle $window_name";
+			toggle_window (window_name);
 		} else {
 			response = "Error: Window name not provided";
 		}
@@ -80,10 +66,6 @@ public string process_command (string command) {
 	case "-Q":
 	case "--quit":
 		this.quit ();
-		break;
-	case "-I":
-	case "--inspector":
-		response = "Not implemented.";
 		break;
 	case "-h":
 	case "--help":
@@ -101,7 +83,6 @@ private string print_help () {
 	       + "Options:\n"
 	       + "  \033[34m-T|--toggle-window\033[0m \033[32m<window>\033[0m  | Toggle visibility of the specified window\n"
 	       + "  \033[34m-Q|--quit\033[0m                    | Quit the application\n"
-	       + "  \033[34m-I|--inspector\033[0m               | Open the GTK inspector\n"
 	       + "  \033[34m-h|--help\033[0m                    | Show this help message";
 }
 

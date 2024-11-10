@@ -1,7 +1,7 @@
 using GtkLayerShell;
 
 [GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/QuickSettings.ui")]
-public class QuickSettings : Gtk.Window, ILayerWindow {
+public class QuickSettings : Astal.Window {
     // créer une instance statique de la classe QuickSettings
     private static QuickSettings? instance;
 
@@ -31,14 +31,12 @@ public class QuickSettings : Gtk.Window, ILayerWindow {
 
     public QuickSettings () {
         Object (
-            name: "QuickSettings",
-            namespace: "QuickSettings"
+            anchor: Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT,
+            margin_top: 20
         );
 
         // On stock l'instance dès la création
         instance = this;
-        
-        init_layer_properties ();
     }
 
     // Method pour chopper l'instance depuis n'importe où
@@ -101,8 +99,9 @@ public class QuickSettings : Gtk.Window, ILayerWindow {
                 if (FileUtils.get_contents(BACKLIGHT_PATH + "/brightness", out current_brightness_str)) {
                     int current_brightness = int.parse(current_brightness_str.strip());
                     print("Current brightness: %d\n", current_brightness);
-                    backlight_adjust.value = (double)current_brightness / max_brightness;
+                    backlight_adjust.value = (double) current_brightness / max_brightness; // CRITICAL
                 }
+                
             }
         } catch (Error e) {
             print("Failed to initialize backlight: %s\n", e.message);
