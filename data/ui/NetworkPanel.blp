@@ -8,31 +8,6 @@ template $NetworkPanel: Box {
         "network_panel"
     ]
 
-    Box header {
-        orientation: horizontal;
-        spacing: 12;
-        margin-bottom: 6;
-
-        Label {
-            label: "Réseaux WiFi";
-            halign: start;
-            hexpand: true;
-            styles ["title-3"]
-        }
-
-        Button back_button {
-            icon-name: "go-previous-symbolic";
-            valign: center;
-            styles ["circular", "flat"]
-        }
-
-        Button refresh_button {
-            icon-name: "view-refresh-symbolic";
-            valign: end;
-            styles ["circular", "flat"]
-        }
-    }
-
     ScrolledWindow {
         vexpand: true;
         min-content-height: 200;

@@ -4,21 +4,13 @@ public class BluetoothPanel : Gtk.Box {
     private unowned Gtk.ListView devices_list;
     
     [GtkChild]
-    private unowned Gtk.Button back_button;
-
-    [GtkChild]
-    private unowned Gtk.Button refresh_button;
-    
-    [GtkChild]
     private unowned Gtk.Label status_label;
 
+    private HeaderPanel header;
     private AstalBluetooth.Bluetooth bluetooth;
     private AstalBluetooth.Adapter adapter;
-
     private GLib.ListStore devices_store;
     private Gtk.SingleSelection selection_model;
-
-    // stockage appareils connectés
     private GLib.HashTable<string, AstalBluetooth.Device> connected_devices;
 
     public BluetoothPanel() {
@@ -28,9 +20,21 @@ public class BluetoothPanel : Gtk.Box {
     construct {
         set_css_name("bluetooth_panel");
         
+        // Setup header
+        header = new HeaderPanel();
+        header.title = "Bluetooth Devices";
+        header.on_back_clicked.connect(() => {
+            QuickSettings.get_instance().show_panel("quick");
+        });
+        header.on_refresh_clicked.connect(() => {
+            scan_devices.begin();
+        });
+        
+        prepend(header);
+        
+        // Initialize bluetooth components
         bluetooth = AstalBluetooth.get_default();
         adapter = bluetooth.adapter;
-        
         devices_store = new GLib.ListStore(typeof(GLib.Object));
         selection_model = new Gtk.SingleSelection(devices_store);
         connected_devices = new GLib.HashTable<string, AstalBluetooth.Device>(str_hash, str_equal);
@@ -38,13 +42,11 @@ public class BluetoothPanel : Gtk.Box {
         setup_device_list();
         setup_signals();
         
-        // On scan au démarrage si le BT est actif
         if (bluetooth.is_powered) {
             scan_devices.begin();
         }
     }
 
-    // Classe pour les headers
     private class HeaderItem : Object {
         public string title { get; construct; }
         
@@ -82,18 +84,14 @@ public class BluetoothPanel : Gtk.Box {
             var icon = box.get_first_child() as Gtk.Image;
             var label = icon.get_next_sibling() as Gtk.Label;
             
-            // Si c'est un header
             if (list_item.item is HeaderItem) {
                 var header = list_item.item as HeaderItem;
                 label.label = header.title;
                 label.add_css_class("separator-label");
                 icon.visible = false;
-                
-                
                 return;
             }
             
-            // Sinon c'est un appareil normal
             icon.visible = true;
             string status = get_device_status(device);
             label.label = "%s%s".printf(device.name ?? device.address, status);
@@ -105,8 +103,8 @@ public class BluetoothPanel : Gtk.Box {
     }
     
     private string get_device_status(AstalBluetooth.Device device) {
-        if (device.paired) return " (Appairé)";
-        if (device.connected) return " (Connecté)";
+        if (device.paired) return " (Paired)";
+        if (device.connected) return " (Connected)";
         return "";
     }
     
@@ -126,18 +124,9 @@ public class BluetoothPanel : Gtk.Box {
     }
 
     private void setup_signals() {
-
         devices_list.activate.connect((pos) => {
             var selected_device = selection_model.selected_item as AstalBluetooth.Device;
             handle_device_action.begin(selected_device);
-        });
-
-        back_button.clicked.connect(() => {
-            QuickSettings.get_instance().show_panel("quick");
-        });
-        
-        refresh_button.clicked.connect(() => {
-            scan_devices.begin();
         });
     }
 
@@ -145,24 +134,23 @@ public class BluetoothPanel : Gtk.Box {
         if (device == null) return;
 
         if (!device.paired) {
-            status_label.label = "Appairage en cours...";
+            status_label.label = "Pairing in progress...";
             
-            // On attend un peu avant et après pour être sûr
             yield wait_milliseconds(500);
-            device.pair();  // Méthode sync
+            device.pair();
             yield wait_milliseconds(1000);
             
-            status_label.label = "Appareil appairé !";
+            status_label.label = "Device paired!";
             yield scan_devices();
             
         } else if (!device.connected) {
-            status_label.label = "Connexion en cours...";
+            status_label.label = "Connection in progress...";
             
             yield wait_milliseconds(500);
             device.connect_profile("*");
             yield wait_milliseconds(1000);
             
-            status_label.label = "Appareil connecté !";
+            status_label.label = "Device connected!";
             yield scan_devices();
             
         } else {
@@ -171,18 +159,14 @@ public class BluetoothPanel : Gtk.Box {
     }
 
     private async void device_disconnect(AstalBluetooth.Device device) {
-        status_label.label = "Déconnexion en cours...";
+        status_label.label = "Disconnecting...";
         
         yield wait_milliseconds(500);
-        
-        
         yield device.disconnect_device();
-        
-        
         yield wait_milliseconds(1000);
-        status_label.label = "Appareil déconnecté !";
-        yield scan_devices();
         
+        status_label.label = "Device disconnected!";
+        yield scan_devices();
     }
 
     private async void scan_devices() {
@@ -208,27 +192,23 @@ public class BluetoothPanel : Gtk.Box {
             }
         }
         
-        // Ajouter le header pour les appareils connectés si il y en a
         if (connected.length > 0) {
-            devices_store.append(new HeaderItem("Appareils connectés"));
+            devices_store.append(new HeaderItem("Connected Devices"));
             foreach (var device in connected.data) {
                 devices_store.append(device);
             }
         }
         
-        // Ajouter le header pour les appareils non connectés si il y en a
         if (disconnected.length > 0) {
-            devices_store.append(new HeaderItem("Appareils disponibles"));
+            devices_store.append(new HeaderItem("Available Devices"));
             foreach (var device in disconnected.data) {
                 devices_store.append(device);
             }
         }
         
-        status_label.label = "Recherche d'appareils...";
-        
+        status_label.label = "Scanning for devices...";
     }
 
-    // Helper pour attendre en async
     private async void wait_milliseconds(uint ms) {
         Timeout.add(ms, () => {
             wait_milliseconds.callback();

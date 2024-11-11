@@ -3,12 +3,7 @@ public class NetworkPanel : Gtk.Box {
     [GtkChild]
     private unowned Gtk.ListView networks_list;
     
-    [GtkChild]
-    private unowned Gtk.Button refresh_button;
-
-    [GtkChild]
-    private unowned Gtk.Button back_button;
-
+    private HeaderPanel header;
     private AstalNetwork.Network network;
     private GLib.ListStore network_store;
     private Gtk.SingleSelection selection_model;
@@ -20,18 +15,37 @@ public class NetworkPanel : Gtk.Box {
     construct {
         set_css_name("network_panel");
         
-        network = AstalNetwork.get_default();
+        // Setup header
+        header = new HeaderPanel();
+        header.title = "Wi-Fi Networks";
+        header.on_back_clicked.connect(() => {
+            QuickSettings.get_instance().show_panel("quick");
+        });
+        header.on_refresh_clicked.connect(() => {
+            scan_networks();
+        });
         
+        prepend(header);
+        
+        // Initialize network components
+        network = AstalNetwork.get_default();
         network_store = new GLib.ListStore(typeof(AstalNetwork.AccessPoint));
         selection_model = new Gtk.SingleSelection(network_store);
         
+        setup_network_list();
+        setup_signals();
+        scan_networks();
+    }
+
+    private void setup_network_list() {
         var factory = new Gtk.SignalListItemFactory();
         factory.setup.connect((item) => {
             var list_item = item as Gtk.ListItem;
-            var label = new Gtk.Label("");
-            label.halign = Gtk.Align.START;
-            label.margin_start = 12;
-            label.margin_end = 12;
+            var label = new Gtk.Label("") {
+                halign = Gtk.Align.START,
+                margin_start = 12,
+                margin_end = 12
+            };
             list_item.child = label;
         });
         
@@ -39,23 +53,22 @@ public class NetworkPanel : Gtk.Box {
             var list_item = item as Gtk.ListItem;
             var ap = list_item.item as AstalNetwork.AccessPoint;
             var label = list_item.child as Gtk.Label;
-            label.label = ap.ssid ?? "Réseau inconnu";
+            label.label = ap.ssid ?? "Unknown Network";
         });
         
         networks_list.model = selection_model;
         networks_list.factory = factory;
+    }
 
-        // Gestion de la sélection d'un réseau
+    private void setup_signals() {
         networks_list.activate.connect((pos) => {
             var selected_ap = selection_model.selected_item as AstalNetwork.AccessPoint;
             if (selected_ap != null) {
                 try {
-                    // On active le WiFi si pas déjà fait
                     if (!network.wifi.enabled) {
                         network.wifi.enabled = true;
                     }
 
-                    // On chope l'instance une seule fois, c'est plus propre
                     var quick_settings = QuickSettings.get_instance();
                     var popup = Popup.get_instance();
                     Geronimo.instance.toggle_window("Popup");
@@ -64,23 +77,12 @@ public class NetworkPanel : Gtk.Box {
 
                     this.visible = false;
                     quick_settings.show_panel("quick");
-                    quick_settings.visible = false;  // Ou quick_settings.hide() si tu préfères
-
+                    quick_settings.visible = false;
                 } catch (Error e) {
-                    stderr.printf("Erreur connexion: %s\n", e.message);
+                    stderr.printf("Connection error: %s\n", e.message);
                 }
             }
         });
-
-        back_button.clicked.connect(() => {
-            QuickSettings.get_instance().show_panel("quick");
-        });
-        
-        refresh_button.clicked.connect(() => {
-            scan_networks();
-        });
-        
-        scan_networks();
     }
 
     private void scan_networks() {
