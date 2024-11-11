@@ -97,32 +97,89 @@ private void setup_event_handlers () {
 }
 
 // Battery methods
-private void update_battery_icon(int displayed_percentage, bool charging) {
-    string battery_icon_name;
-    string? css_class = null;
 
+// Treshold constants
+private const int BATTERY_LOW_THRESHOLD = 20;
+private const int BATTERY_CAUTION_THRESHOLD = 40;
+private const int BATTERY_GOOD_THRESHOLD = 70;
+
+// Icon constants
+private const string ICON_BATTERY_EMPTY = "battery-empty-symbolic";
+private const string ICON_BATTERY_CAUTION = "battery-caution-symbolic";
+private const string ICON_BATTERY_GOOD = "battery-good-symbolic";
+private const string ICON_BATTERY_FULL = "battery-full-symbolic";
+private const string ICON_BATTERY_CHARGING = "exception-symbolic";
+
+enum BatteryState { CHARGING, EMPTY, CAUTION, GOOD, FULL }
+
+// CSS Constants
+private const string CSS_CLASS_CHARGING = "charging";
+private const string CSS_CLASS_LOW = "low";
+
+// ICON Size Constant
+private const int ICON_SIZE = 30;
+private const int ICON_CHARGING_SIZE = 20;
+
+// Track charging state
+private bool previous_charging_state = false;
+
+private void update_battery_icon(int displayed_percentage, bool charging) {    
+    // Determine battery state
+    BatteryState battery_state;
     if (charging) {
-        css_class = "charging";
-    } else if (displayed_percentage <= 20) {
-        battery_icon_name = "battery-empty-symbolic";
-        css_class = "low";
-    } else if (displayed_percentage < 40) {
-        battery_icon_name = "battery-caution-symbolic";
-    } else if (displayed_percentage < 70) {
-        battery_icon_name = "battery-good-symbolic";
+        battery_state = BatteryState.CHARGING;
+    } else if (displayed_percentage <= BATTERY_LOW_THRESHOLD) {
+        battery_state = BatteryState.EMPTY;
+    } else if (displayed_percentage < BATTERY_CAUTION_THRESHOLD) {
+        battery_state = BatteryState.CAUTION;
+    } else if (displayed_percentage < BATTERY_GOOD_THRESHOLD) {
+        battery_state = BatteryState.GOOD;
     } else {
-        battery_icon_name = "battery-full-symbolic";
+        battery_state = BatteryState.FULL;
     }
-
-    battery_icon.icon_name = battery_icon_name;
-    battery_icon.pixel_size = 30;
-
-    if (css_class != null) {
-		battery_icon.remove_css_class("charging");
-		battery_icon.remove_css_class("low");
-
-        battery_icon.add_css_class(css_class);
+    
+    // Switch on the battery state
+    switch (battery_state) {
+        case BatteryState.CHARGING:
+            icon_name = ICON_BATTERY_CHARGING;
+            battery_icon.add_css_class(CSS_CLASS_CHARGING);
+            battery_icon.pixel_size = ICON_CHARGING_SIZE;
+            break;
+            
+        case BatteryState.EMPTY:
+            icon_name = ICON_BATTERY_EMPTY;
+            battery_icon.add_css_class(CSS_CLASS_LOW);
+            battery_icon.pixel_size = ICON_SIZE;
+            break;
+            
+        case BatteryState.CAUTION:
+            icon_name = ICON_BATTERY_CAUTION;
+            battery_icon.pixel_size = ICON_SIZE;
+            break;
+            
+        case BatteryState.GOOD:
+            icon_name = ICON_BATTERY_GOOD;
+            battery_icon.pixel_size = ICON_SIZE;
+            break;
+            
+        case BatteryState.FULL:
+            icon_name = ICON_BATTERY_FULL;
+            battery_icon.pixel_size = ICON_SIZE;
+            break;
     }
+    
+    // Remove previous CSS Classes
+    if (!charging && previous_charging_state) {
+        battery_icon.remove_css_class(CSS_CLASS_CHARGING);
+        battery_icon.queue_draw();
+    } else if (battery_state != BatteryState.EMPTY && battery_icon.has_css_class(CSS_CLASS_LOW)) {
+        battery_icon.remove_css_class(CSS_CLASS_LOW);
+        battery_icon.queue_draw();
+    }
+    
+    battery_icon.icon_name = icon_name;
+    
+    previous_charging_state = charging;
 }
 
 private void update_battery() {
