@@ -25,6 +25,14 @@ public Geronimo() {
 	);
 }
 
+public static void open_window(string str) {
+	try {
+		instance.toggle_window(str);
+	} catch (GLib.Error e) {
+		warning("Erreur GLib : %s", e.message);
+	}
+}
+
 [DBus(visible = false)]
 public override void activate(){
 	base.activate();

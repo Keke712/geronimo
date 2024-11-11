@@ -16,8 +16,6 @@ private List<Gtk.Button> workspace_buttons = new List<Gtk.Button> ();
 public AstalMpris.Player mpd { get; set; }
 public AstalWp.Endpoint speaker { get; set; }
 
-public string namespace { get; set; }
-
 // UI Elements
 [GtkChild]
 public unowned Gtk.Box workspaces;
@@ -62,7 +60,7 @@ public StatusBar () {
 		anchor: Astal.WindowAnchor.LEFT | Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT
 	);
 
-	auto_exclusive_zone_enable(this); // make this bar a bar
+	auto_exclusive_zone_enable(this); // make this a plain bar (not overlay)
     
     present();
 }
@@ -89,42 +87,42 @@ construct {
 
 private void setup_event_handlers () {
 	power_button.clicked.connect (() => {
-			Geronimo.instance.toggle_window ("QuickSettings");
+		Geronimo.open_window("QuickSettings");
 			QuickSettings.get_instance().show_panel ("quick");
 		});
 
 	apps_button.clicked.connect (() => {
-			Geronimo.instance.toggle_window ("Runner");
+			Geronimo.open_window("Runner");
 		});
 }
 
 // Battery methods
 private void update_battery_icon(int displayed_percentage, bool charging) {
     string battery_icon_name;
-    string css_class;
+    string? css_class = null;
 
-    if (displayed_percentage <= 25) {
-        battery_icon_name = charging ? "battery-empty-charging" : "battery-empty-symbolic";
+    if (charging) {
+        css_class = "charging";
+    } else if (displayed_percentage <= 20) {
+        battery_icon_name = "battery-empty-symbolic";
         css_class = "low";
-    } else if (displayed_percentage < 50) {
-        battery_icon_name = charging ? "battery-caution-charging" : "battery-caution-symbolic";
-        css_class = "medium";
-    } else if (displayed_percentage < 80) {
-        battery_icon_name = charging ? "battery-good-charging" : "battery-good-symbolic";
-        css_class = "good";
+    } else if (displayed_percentage < 40) {
+        battery_icon_name = "battery-caution-symbolic";
+    } else if (displayed_percentage < 70) {
+        battery_icon_name = "battery-good-symbolic";
     } else {
-        battery_icon_name = charging ? "battery-full-charging" : "battery-full-symbolic";
-        css_class = "full";
+        battery_icon_name = "battery-full-symbolic";
     }
 
     battery_icon.icon_name = battery_icon_name;
     battery_icon.pixel_size = 30;
 
-    battery_icon.remove_css_class("low");
-    battery_icon.remove_css_class("medium");
-    battery_icon.remove_css_class("good");
-    battery_icon.remove_css_class("full");
-    battery_icon.add_css_class(css_class);
+    if (css_class != null) {
+		battery_icon.remove_css_class("charging");
+		battery_icon.remove_css_class("low");
+
+        battery_icon.add_css_class(css_class);
+    }
 }
 
 private void update_battery() {
@@ -294,8 +292,4 @@ private void connect_button_to_workspace (Gtk.Button button, int workspace_numbe
 		});
 }
 
-private bool workspace_has_windows (int workspace_number) {
-	var window_count = hyprland.get_workspace (workspace_number).clients.length ();
-	return window_count > 0;
-}
 }
