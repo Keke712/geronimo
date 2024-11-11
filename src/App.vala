@@ -58,14 +58,19 @@ public string process_command (string command) {
 	case "--toggle-window" :
 		if (args.length > 1) {
 			string window_name = args[1];
-			toggle_window (window_name);
+			open_window (window_name);
 		} else {
 			response = "Error: Window name not provided";
 		}
 		break;
 	case "-Q":
 	case "--quit":
-		this.quit ();
+		try {
+			this.quit ();
+		} catch (GLib.Error e) {
+			print("GLib.Error");
+		}
+		
 		break;
 	case "-h":
 	case "--help":
