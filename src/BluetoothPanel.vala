@@ -144,103 +144,88 @@ public class BluetoothPanel : Gtk.Box {
     private async void handle_device_action(AstalBluetooth.Device? device) {
         if (device == null) return;
 
-        try {
-            if (!device.paired) {
-                status_label.label = "Appairage en cours...";
-                try {
-                    // On attend un peu avant et après pour être sûr
-                    yield wait_milliseconds(500);
-                    device.pair();  // Méthode sync
-                    yield wait_milliseconds(1000);
-                    
-                    status_label.label = "Appareil appairé !";
-                    yield scan_devices();
-                } catch (Error e) {
-                    status_label.label = "Erreur d'appairage : %s".printf(e.message);
-                }
-            } else if (!device.connected) {
-                status_label.label = "Connexion en cours...";
-                try {
-                    yield wait_milliseconds(500);
-                    device.connect_profile("*");
-                    yield wait_milliseconds(1000);
-                    
-                    status_label.label = "Appareil connecté !";
-                    yield scan_devices();
-                } catch (Error e) {
-                    status_label.label = "Erreur de connexion : %s".printf(e.message);
-                }
-            } else {
-                device_disconnect.begin(device);
-            }
-        } catch (Error e) {
-            status_label.label = "Erreur : %s".printf(e.message);
+        if (!device.paired) {
+            status_label.label = "Appairage en cours...";
+            
+            // On attend un peu avant et après pour être sûr
+            yield wait_milliseconds(500);
+            device.pair();  // Méthode sync
+            yield wait_milliseconds(1000);
+            
+            status_label.label = "Appareil appairé !";
+            yield scan_devices();
+            
+        } else if (!device.connected) {
+            status_label.label = "Connexion en cours...";
+            
+            yield wait_milliseconds(500);
+            device.connect_profile("*");
+            yield wait_milliseconds(1000);
+            
+            status_label.label = "Appareil connecté !";
+            yield scan_devices();
+            
+        } else {
+            device_disconnect.begin(device);
         }
     }
 
     private async void device_disconnect(AstalBluetooth.Device device) {
         status_label.label = "Déconnexion en cours...";
-        try {
-            yield wait_milliseconds(500);
-            
-            try {
-                yield device.disconnect_device();
-            } catch (GLib.Error disconnect_error) {
-                print("Disconnect error: %s\n", disconnect_error.message);
-            }
-            
-            yield wait_milliseconds(1000);
-            status_label.label = "Appareil déconnecté !";
-            yield scan_devices();
-        } catch (Error e) {
-            status_label.label = "Erreur de déconnexion : %s".printf(e.message);
-        }
+        
+        yield wait_milliseconds(500);
+        
+        
+        yield device.disconnect_device();
+        
+        
+        yield wait_milliseconds(1000);
+        status_label.label = "Appareil déconnecté !";
+        yield scan_devices();
+        
     }
 
     private async void scan_devices() {
         if (!bluetooth.is_powered) return;
         
-        try {
-            if (adapter.discovering) {
-                adapter.stop_discovery();
-                yield wait_milliseconds(500);
-            }
-            
-            adapter.start_discovery();
-            devices_store.remove_all();
-            yield wait_milliseconds(1000);
-            
-            var connected = new GenericArray<AstalBluetooth.Device>();
-            var disconnected = new GenericArray<AstalBluetooth.Device>();
-            
-            foreach (var device in bluetooth.devices) {
-                if (device.connected) {
-                    connected.add(device);
-                } else {
-                    disconnected.add(device);
-                }
-            }
-            
-            // Ajouter le header pour les appareils connectés si il y en a
-            if (connected.length > 0) {
-                devices_store.append(new HeaderItem("Appareils connectés"));
-                foreach (var device in connected.data) {
-                    devices_store.append(device);
-                }
-            }
-            
-            // Ajouter le header pour les appareils non connectés si il y en a
-            if (disconnected.length > 0) {
-                devices_store.append(new HeaderItem("Appareils disponibles"));
-                foreach (var device in disconnected.data) {
-                    devices_store.append(device);
-                }
-            }
-            
-            status_label.label = "Recherche d'appareils...";
-        } catch (Error e) {
-            status_label.label = "Erreur lors du scan : %s".printf(e.message);
+        if (adapter.discovering) {
+            adapter.stop_discovery();
+            yield wait_milliseconds(500);
         }
+            
+        adapter.start_discovery();
+        devices_store.remove_all();
+        yield wait_milliseconds(1000);
+        
+        var connected = new GenericArray<AstalBluetooth.Device>();
+        var disconnected = new GenericArray<AstalBluetooth.Device>();
+        
+        foreach (var device in bluetooth.devices) {
+            if (device.connected) {
+                connected.add(device);
+            } else {
+                disconnected.add(device);
+            }
+        }
+        
+        // Ajouter le header pour les appareils connectés si il y en a
+        if (connected.length > 0) {
+            devices_store.append(new HeaderItem("Appareils connectés"));
+            foreach (var device in connected.data) {
+                devices_store.append(device);
+            }
+        }
+        
+        // Ajouter le header pour les appareils non connectés si il y en a
+        if (disconnected.length > 0) {
+            devices_store.append(new HeaderItem("Appareils disponibles"));
+            foreach (var device in disconnected.data) {
+                devices_store.append(device);
+            }
+        }
+        
+        status_label.label = "Recherche d'appareils...";
+        
     }
 
     // Helper pour attendre en async
