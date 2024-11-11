@@ -60,8 +60,6 @@ public class Popup : Astal.Window {
         this.visible = false;
     }
 
-    public string namespace { get; set; }
-
     // Méthode pour update le titre
     public void update_title(string title) {
         // Vérifie que le label existe avant de le modifier

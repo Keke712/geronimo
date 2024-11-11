@@ -7,7 +7,6 @@ public class QuickSettings : Astal.Window {
 
     public AstalWp.Endpoint speaker { get; set; }
     public AstalMpris.Mpris mpris {get; private set;}
-    public string namespace { get; set; }
 
     public const int n_grid_buttons = 10;
 

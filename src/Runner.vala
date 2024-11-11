@@ -14,11 +14,11 @@ public class Runner : Astal.Window {
     private int sort_func(Gtk.ListBoxRow la, Gtk.ListBoxRow lb) {
         RunnerButton a = (RunnerButton)la;
         RunnerButton b = (RunnerButton)lb;
-        // Si les scores sont égaux, on trie par fréquence
+        // if score = -> frequency
         if (a.score == b.score) {
             return b.app.frequency - a.app.frequency;
         }
-        // Sinon on trie par score
+        // -> score
         return (a.score > b.score) ? -1 : 1;
     }
 
@@ -30,7 +30,7 @@ public class Runner : Astal.Window {
     bool is_mathematical_expression(string text) {
         if (text.length == 0) return false;
         
-        // Vérifie si le premier caractère est un chiffre ou une parenthèse ouvrante
+        // check if the first char is a mathematical digit
         if (text[0].isdigit() || text[0] == '(') {
             string valid_chars = "0123456789+-*/^().";
             for (int i = 0; i < text.length; i++) {
@@ -86,12 +86,12 @@ public class Runner : Astal.Window {
         string text = this.entry.text.strip();
         calculator_app = get_runnerbutton(CALCULATOR_NAME);
 
-        // Mode calculatrice
+        // Calculator mode
         if (is_mathematical_expression(text)) {
             AstalApps.Application? calc_app = get_app(CALCULATOR_NAME);
             if (calc_app == null) return;
 
-            // Création du preview si nécessaire
+            // Create the first widget if it's null
             if (calculator == null) {
                 calculator = new RunnerButton(calc_app);
                 calculator.score = 100;
@@ -99,7 +99,7 @@ public class Runner : Astal.Window {
                 this.app_list.insert(calculator, 0);
             }
             
-            // Mise à jour du résultat
+            // Update the widget
             try {
                 calculator.set_description("%.2f".printf(Calculator.evaluate(text)));
             } catch (CalculatorError.INVALID_EXPRESSION e) {
@@ -108,20 +108,20 @@ public class Runner : Astal.Window {
                 calculator.set_description(ERROR_CALC);
             }
 
-            // Masquer l'app calculatrice
+            // Make invisible the second calculator application
             calculator_app.visible = false;
 
             return;
         }
 
-        // Mode normal
+        // Normal mode
         if (calculator != null) {
             this.app_list.remove(calculator);
             calculator = null;
             calculator_app.visible = true;
         }
 
-        // Mise à jour des scores
+        // Score update
         int i = 0;
         RunnerButton? app = (RunnerButton)this.app_list.get_row_at_index(i);
         while (app != null) {
@@ -159,7 +159,7 @@ public class Runner : Astal.Window {
     }
 
     construct {
-        // Dans le constructeur ou le bloc construct
+        // make window editable
         GtkLayerShell.init_for_window(this);
         GtkLayerShell.set_keyboard_mode(this, GtkLayerShell.KeyboardMode.EXCLUSIVE);
 
