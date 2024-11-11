@@ -32,7 +32,8 @@ public class QuickSettings : Astal.Window {
     public QuickSettings () {
         Object (
             anchor: Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT,
-            margin_top: 20
+            margin_top: 10,
+            margin_right: 10
         );
 
         // On stock l'instance dès la création
