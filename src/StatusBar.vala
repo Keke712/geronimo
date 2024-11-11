@@ -50,6 +50,9 @@ public unowned Gtk.Button power_button;
 [GtkChild]
 public unowned Gtk.Image battery_icon;
 
+[GtkChild]
+public unowned Gtk.Label crypto_account;
+
 // Workspace icon
 private static string wicon = "󰝥 ";
 private int max_workspace_id = 10;  // Set a maximum number of workspaces

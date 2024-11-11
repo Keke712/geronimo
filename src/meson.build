@@ -3,14 +3,19 @@ source_files = [
     'App.vala',
     'StatusBar.vala',
     'QuickSettings.vala',
-    'QuickPanel.vala',
     'QuickSettingsButton.vala',
     'Runner.vala',
     'RunnerButton.vala',
-    'Mpris.vala',
-    'NetworkPanel.vala',
-    'BluetoothPanel.vala',
+
+    'Widgets/QuickPanel.vala',
+    'Widgets/Mpris.vala',
+    'Widgets/NetworkPanel.vala',
+    'Widgets/BluetoothPanel.vala',
+    'Widgets/CryptoWallet.vala',
+    'Widgets/HeaderPanel.vala',
+
     'Utils/Popup.vala',
+    'Utils/Crypto.vala',
     'Utils/Calculator.vala',
 ]
 
@@ -24,7 +29,10 @@ executable(
         dependency('gtk4'),
         dependency('gtk4-layer-shell-0'),
         dependency('libnm'),
-        
+        # Crypto
+        dependency('json-glib-1.0'),
+        dependency('libsoup-2.4'),
+        # Astal librairies
         dependency('astal-wireplumber-0.1'),
         dependency('astal-mpris-0.1'),
         dependency('astal-hyprland-0.1'),
@@ -33,9 +41,10 @@ executable(
         dependency('astal-bluetooth-0.1'),
         dependency('astal-battery-0.1'),
         dependency('astal-apps-0.1'),
-
+        # Astal core libraries
         dependency('astal-io-0.1'),
         dependency('astal-4-4.0'),
+        #
         dependency('gio-unix-2.0'),
         dependency('libadwaita-1'),
     ],

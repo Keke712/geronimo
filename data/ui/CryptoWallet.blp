@@ -1,0 +1,20 @@
+using Gtk 4.0;
+
+template $CryptoWallet: Box {
+    orientation: vertical;
+    spacing: 6;
+
+    styles [
+        "crypto_wallet"
+    ]
+
+    Box accounts {
+        orientation: vertical;
+        spacing: 12;
+        valign: center;
+        halign: center;
+        margin-top: 24;
+        margin-bottom: 24;
+        styles [ "crypto_accounts" ]
+    }
+}

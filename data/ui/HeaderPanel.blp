@@ -1,0 +1,28 @@
+using Gtk 4.0;
+
+template $HeaderPanel: Box {
+    orientation: horizontal;
+    spacing: 12;
+    margin-bottom: 6;
+    margin-start: 12;
+    margin-end: 12;
+
+    Label title_label {
+        label: "Title";
+        halign: start;
+        hexpand: true;
+        styles ["title-3"]
+    }
+
+    Button back_button {
+        icon-name: "go-previous-symbolic";
+        valign: center;
+        styles ["circular", "flat"]
+    }
+
+    Button refresh_button {
+        icon-name: "view-refresh-symbolic";
+        valign: end;
+        styles ["circular", "flat"]
+    }
+}

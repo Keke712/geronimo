@@ -57,6 +57,8 @@ template $QuickPanel: Grid {
     }
 
     $QuickSettingsButton {
+        clicked => $cryptowallet_clicked();
+        icon: "im-bitcoin";
         layout {
             row: 2;
             column: 0;

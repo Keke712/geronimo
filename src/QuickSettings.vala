@@ -209,6 +209,11 @@ public class QuickSettings : Astal.Window {
         quick_settings_grid.attach(bluetooth_panel, 0, 0, 1, 1);
     }
 
+    private void setup_crypto_panel() {
+        CryptoWallet crypto_wallet = new CryptoWallet();
+        quick_settings_grid.attach(crypto_wallet, 0, 0, 1, 1);
+    }
+
     public void show_panel(string panel) {
         clear_panel();
 
@@ -218,6 +223,8 @@ public class QuickSettings : Astal.Window {
             setup_network_panel();
         } else if ( panel == "bluetooth" ) {
             setup_bluetooth_panel();
+        } else if ( panel == "crypto") {
+            setup_crypto_panel();
         }
     }
 

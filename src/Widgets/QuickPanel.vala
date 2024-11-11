@@ -87,4 +87,10 @@ public class QuickPanel : Gtk.Grid {
     public void on_notif_arrow_clicked() {
         // TODO: Implement notification arrow click functionality
     }
+
+    [GtkCallback]
+    public void cryptowallet_clicked() {
+        this.visible = false;
+        QuickSettings.get_instance().show_panel("crypto");
+    }
 }
