@@ -3,16 +3,16 @@ subdir('scss')
 targets = files(
     'ui/Mpris.blp',
     'ui/QuickSettings.blp',
-    'ui/QuickPanel.blp',
     'ui/QuickSettingsButton.blp',
     'ui/Runner.blp',
     'ui/RunnerButton.blp',
     'ui/StatusBar.blp',
-    'ui/NetworkPanel.blp',
-    'ui/BluetoothPanel.blp',
-    'ui/HeaderPanel.blp',
 
-    'ui/CryptoWallet.blp',
+    'ui/Widgets/QuickPanel.blp',
+    'ui/Widgets/NetworkPanel.blp',
+    'ui/Widgets/BluetoothPanel.blp',
+    'ui/Widgets/CryptoWallet.blp',
+    'ui/Widgets/HeaderPanel.blp',
 
     'ui/Utils/Popup.blp',
 )
