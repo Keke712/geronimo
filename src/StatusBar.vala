@@ -5,6 +5,13 @@ using GtkLayerShell;
 [GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/StatusBar.ui")]
 public class StatusBar : Astal.Window {
 
+// Interface
+private static StatusBar? instance;
+
+public static StatusBar get_instance() {
+	return instance;
+}
+
 // Properties
 private AstalMpris.Mpris mpris { get; set; }
 private AstalHyprland.Hyprland hyprland { get; set; }
@@ -62,9 +69,8 @@ public StatusBar () {
 	Object (
 		anchor: Astal.WindowAnchor.LEFT | Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT
 	);
-
-	auto_exclusive_zone_enable(this); // make this a plain bar (not overlay)
-    
+	
+	switch_bar_mode();
     present();
 }
 
@@ -86,6 +92,14 @@ construct {
 		print("Initialized\n");
 		return false;
 	});
+}
+
+public void switch_bar_mode() {
+	if (!auto_exclusive_zone_is_enabled(this)) {
+		auto_exclusive_zone_enable(this);
+	} else {
+		auto_exclusive_zone_enable(this);
+	}
 }
 
 private void setup_event_handlers () {

@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/BluetoothPanel.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Widgets/BluetoothPanel.ui")]
 public class BluetoothPanel : Gtk.Box {
     [GtkChild]
     private unowned Gtk.ListView devices_list;

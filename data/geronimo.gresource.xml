@@ -3,15 +3,15 @@
     <gresource prefix="/com/github/Keke712/geronimo">
         <file>geronimo.css</file>
         <file preprocess="xml-stripblanks">ui/StatusBar.ui</file>
-        <file preprocess="xml-stripblanks">ui/Mpris.ui</file>
         <file preprocess="xml-stripblanks">ui/QuickSettingsButton.ui</file>
         <file preprocess="xml-stripblanks">ui/QuickSettings.ui</file>
 
-        <file preprocess="xml-stripblanks">ui/QuickPanel.ui</file>
-        <file preprocess="xml-stripblanks">ui/NetworkPanel.ui</file>
-        <file preprocess="xml-stripblanks">ui/BluetoothPanel.ui</file>
-        <file preprocess="xml-stripblanks">ui/CryptoWallet.ui</file>
-        <file preprocess="xml-stripblanks">ui/HeaderPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/Widgets/Mpris.ui</file>
+        <file preprocess="xml-stripblanks">ui/Widgets/QuickPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/Widgets/NetworkPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/Widgets/BluetoothPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/Widgets/CryptoWallet.ui</file>
+        <file preprocess="xml-stripblanks">ui/Widgets/HeaderPanel.ui</file>
 
         <file preprocess="xml-stripblanks">ui/Utils/Popup.ui</file>
         

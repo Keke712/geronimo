@@ -1,6 +1,5 @@
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/QuickPanel.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Widgets/QuickPanel.ui")]
 public class QuickPanel : Gtk.Grid {
-
     public AstalNetwork.Network network { get; set; }
     public AstalBluetooth.Bluetooth bluetooth { get; set; }
     public AstalNotifd.Notifd notifd {get; private set;}

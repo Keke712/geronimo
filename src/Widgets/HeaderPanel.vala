@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/HeaderPanel.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Widgets/HeaderPanel.ui")]
 public class HeaderPanel : Gtk.Box {
     [GtkChild]
     private unowned Gtk.Button back_button;

@@ -7,6 +7,7 @@ public signal void clicked ();
 public signal void clicked_extras ();
 
 public string icon { get; set; }
+public string file { get; set; }
 
 public bool active {
 	get {

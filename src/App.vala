@@ -71,6 +71,12 @@ public string process_command (string command) {
 			response = "Error: Window name not provided";
 		}
 		break;
+	case "-B":
+	case "--toggle-bar":
+		StatusBar.get_instance().switch_bar_mode();
+		print("Bar mode switched\n");
+		break;
+
 	case "-Q":
 	case "--quit":
 		try {
