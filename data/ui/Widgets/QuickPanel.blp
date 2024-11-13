@@ -65,4 +65,13 @@ template $QuickPanel: Grid {
             column: 0;
         }
     }
+
+    $QuickSettingsButton battery_mode {
+        clicked => $switch_battery_mode();
+
+        layout {
+            row: 2;
+            column: 1;
+        }
+    }
 }
