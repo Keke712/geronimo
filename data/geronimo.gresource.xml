@@ -11,6 +11,7 @@
         <file preprocess="xml-stripblanks">ui/Widgets/NetworkPanel.ui</file>
         <file preprocess="xml-stripblanks">ui/Widgets/BluetoothPanel.ui</file>
         <file preprocess="xml-stripblanks">ui/Widgets/CryptoWallet.ui</file>
+        <file preprocess="xml-stripblanks">ui/Widgets/BatteryMode.ui</file>
         <file preprocess="xml-stripblanks">ui/Widgets/HeaderPanel.ui</file>
 
         <file preprocess="xml-stripblanks">ui/Utils/Popup.ui</file>

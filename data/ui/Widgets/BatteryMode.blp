@@ -1,0 +1,52 @@
+using Gtk 4.0;
+
+template $BatteryMode : Box {
+    orientation: vertical;  // Changé en horizontal
+
+    styles ["BatteryMode"]
+
+    Box {
+        spacing: 0;
+        margin-start: 6;
+        margin-end: 6;
+        margin-top: 6;
+        margin-bottom: 6;
+        height-request: 10;
+        styles ["mode_switching"]
+
+        Button powersaver_button {
+            icon-name: bind $call_icon("power-saver") as <string>;
+            hexpand: true;
+            styles ["battery-button", "low"]
+        }
+
+        Button balanced_button {
+            icon-name: bind $call_icon("balanced") as <string>;
+            hexpand: true;
+            styles ["battery-button", "medium"]
+        }
+
+        Button performance_button {
+            icon-name: bind $call_icon("performance") as <string>;
+            hexpand: true;
+            styles ["battery-button", "high"]
+        }
+    }
+
+    Box info_box {
+        orientation: vertical;
+        spacing: 8;
+        margin-top: 12;
+        styles ["info-box"]
+
+        Label time_left {
+            label: "Loading...";
+            styles ["info-label"]
+        }
+
+        Label capacity_left {
+            label: "";
+            styles ["info-label"]
+        }
+    }
+}

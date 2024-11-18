@@ -12,6 +12,7 @@ targets = files(
     'ui/Widgets/NetworkPanel.blp',
     'ui/Widgets/BluetoothPanel.blp',
     'ui/Widgets/CryptoWallet.blp',
+    'ui/Widgets/BatteryMode.blp',
     'ui/Widgets/HeaderPanel.blp',
 
     'ui/Utils/Popup.blp',
