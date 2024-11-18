@@ -8,6 +8,7 @@ scss_deps = files(
     '_adw.scss',
     '_Runner.scss',
     '_Popup.scss',
+    '_BatteryMode.scss',
     'main.scss',
 )
 

@@ -1,0 +1,51 @@
+.battery-button {
+    min-height: 30px;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    border: none; // Enlever les bordures individuelles
+
+    &:hover {
+        background: transparentize(#3584e4, 0.2);
+    }
+
+    &:checked {
+        background: $accent_color;
+    }
+
+    &.low {
+        border-radius: 15px 0 0 15px;
+        border-left: 1px solid white;
+        border-top: 1px solid white;
+        border-bottom: 1px solid white;
+    }
+
+    &.medium {
+        border-radius: 0px;
+        border-top: 1px solid white;
+        border-bottom: 1px solid white;
+    }
+
+    &.high {
+        border-radius: 0 15px 15px 0;
+        border-right: 1px solid white;
+        border-top: 1px solid white;
+        border-bottom: 1px solid white;
+    }
+}
+
+.battery-button:active {
+    opacity: 0.7;
+}
+
+.BatteryMode {
+    .info-box {
+        margin: 8px 0;
+    
+        .info-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin: 2px 0;
+        }
+    }
+  }
