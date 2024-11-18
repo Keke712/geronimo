@@ -12,11 +12,13 @@ source_files = [
     'Widgets/NetworkPanel.vala',
     'Widgets/BluetoothPanel.vala',
     'Widgets/CryptoWallet.vala',
+    'Widgets/BatteryMode.vala',
     'Widgets/HeaderPanel.vala',
 
     'Utils/Popup.vala',
     'Utils/Crypto.vala',
     'Utils/Calculator.vala',
+    'Utils/UPower.vala',
 ]
 
 executable(

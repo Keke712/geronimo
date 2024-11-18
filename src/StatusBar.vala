@@ -16,7 +16,7 @@ public static StatusBar get_instance() {
 private AstalMpris.Mpris mpris { get; set; }
 private AstalHyprland.Hyprland hyprland { get; set; }
 
-private AstalBattery.Device battery;
+private Battery battery;
 
 private List<Gtk.Button> workspace_buttons = new List<Gtk.Button> ();
 
@@ -78,7 +78,7 @@ construct {
 	speaker = AstalWp.get_default ().audio.default_speaker;
 	mpris = AstalMpris.Mpris.get_default ();
 	hyprland = AstalHyprland.Hyprland.get_default ();
-	battery = AstalBattery.Device.get_default ();
+	battery = new Battery("battery_BAT0");
 
 	init_workspaces ();
 	init_clock ();
@@ -201,10 +201,15 @@ private void update_battery_icon(int displayed_percentage, bool charging) {
 
 private void update_battery() {
     var percentage = battery.percentage;
-    int displayed_percentage = (int) (percentage * 100);
-    bool charging = battery.charging;
-    update_battery_icon(displayed_percentage, charging);
-    battery_label.label = displayed_percentage.to_string() + "%";
+	bool charging;
+	if (battery.state == "charging") {
+		charging = true;
+	} else {
+		charging = false;
+	}
+    
+    update_battery_icon(percentage, charging);
+    battery_label.label = percentage.to_string() + "%";
 }
 
 private void init_battery () {
