@@ -214,6 +214,11 @@ public class QuickSettings : Astal.Window {
         quick_settings_grid.attach(crypto_wallet, 0, 0, 1, 1);
     }
 
+    private void setup_battery_panel() {
+        BatteryMode battery_mode = new BatteryMode();
+        quick_settings_grid.attach(battery_mode, 0, 0, 1, 1);
+    }
+
     public void show_panel(string panel) {
         clear_panel();
 
@@ -225,6 +230,8 @@ public class QuickSettings : Astal.Window {
             setup_bluetooth_panel();
         } else if ( panel == "crypto") {
             setup_crypto_panel();
+        } else if ( panel == "battery") {
+            setup_battery_panel();
         }
     }
 

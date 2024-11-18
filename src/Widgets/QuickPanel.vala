@@ -6,7 +6,10 @@ public class QuickPanel : Gtk.Grid {
     public AstalNotifd.Notifd notifd { get; private set; }
 
     [GtkChild]
-    private unowned QuickSettingsButton battery_mode;
+    private unowned QuickSettingsButton battery_mode_button;
+
+    private string battery_mode_icon;
+    private string current_mode;
 
     // Constructor & initialization
     public QuickPanel() {
@@ -20,7 +23,10 @@ public class QuickPanel : Gtk.Grid {
         network = AstalNetwork.get_default();
 
         // Update battery mode icon
-        update_battery_icon();
+        current_mode = BatteryMode.get_powerprofile();
+        battery_mode_icon = BatteryMode.get_battery_icon(current_mode);
+
+        battery_mode_button.icon = battery_mode_icon;
     }
 
     // Network methods
@@ -100,72 +106,20 @@ public class QuickPanel : Gtk.Grid {
         QuickSettings.get_instance().show_panel("crypto");
     }
 
-    // Battery/Power mode methods
-    private void update_battery_icon() {
-        string stdout;
-        string stderr;
-        int status;
-        
-        Process.spawn_command_line_sync("powerprofilesctl get",
-                                    out stdout,
-                                    out stderr,
-                                    out status);
-        
-        string current_mode = stdout.strip();
-        switch (current_mode) {
-            case "power-saver":
-                battery_mode.icon = "food";
-                break;
+    // Power Profiles -> Icon and methods
 
-            case "balanced":
-                battery_mode.icon = "dashboard-show";
-                break;
-
-            case "performance":
-                battery_mode.icon = "exception";
-                break;
-
-            default:
-                battery_mode.icon = "battery-missing-symbolic";
-                break;
-        }
+    [GtkCallback]
+    private void call_switch() {
+        string current_mode = BatteryMode.get_powerprofile();
+        string next_mode = BatteryMode.get_next_mode(current_mode);
+        BatteryMode.switch_mode(next_mode);
+        battery_mode_button.icon = BatteryMode.get_battery_icon(next_mode);
     }
 
     [GtkCallback]
-    private void switch_battery_mode() {
-        try {
-            string stdout;
-            string stderr;
-            int status;
-            
-            Process.spawn_command_line_sync("powerprofilesctl get",
-                                        out stdout,
-                                        out stderr,
-                                        out status);
-            
-            string current_mode = stdout.strip();
-            string next_mode;
-            
-            switch (current_mode) {
-                case "power-saver":
-                    next_mode = "balanced";
-                    break;
-                case "balanced":
-                    next_mode = "performance";
-                    break;
-                case "performance":
-                    next_mode = "power-saver";
-                    break;
-                default:
-                    next_mode = "balanced";
-                    break;
-            }
-            
-            Process.spawn_command_line_sync("pkexec powerprofilesctl set " + next_mode);
-            update_battery_icon();
-            
-        } catch (SpawnError e) {
-            warning("Erreur : %s", e.message);
-        }
+    private void on_battery_extras() {
+        this.visible = false;
+        QuickSettings.get_instance().show_panel("battery");
     }
+
 }

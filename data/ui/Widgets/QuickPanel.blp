@@ -58,6 +58,7 @@ template $QuickPanel: Grid {
 
     $QuickSettingsButton {
         icon: "wallet-open";
+        extra_visible: false;
         clicked => $cryptowallet_clicked();
 
         layout {
@@ -66,8 +67,9 @@ template $QuickPanel: Grid {
         }
     }
 
-    $QuickSettingsButton battery_mode {
-        clicked => $switch_battery_mode();
+    $QuickSettingsButton battery_mode_button {
+        clicked => $call_switch();
+        clicked_extras => $on_battery_extras();
 
         layout {
             row: 2;
