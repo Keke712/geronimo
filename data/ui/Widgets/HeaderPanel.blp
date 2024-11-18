@@ -16,12 +16,14 @@ template $HeaderPanel: Box {
 
     Button back_button {
         icon-name: "go-previous-symbolic";
+        visible: bind template.back_button_visible;
         valign: center;
         styles ["circular", "flat"]
     }
 
     Button refresh_button {
         icon-name: "view-refresh-symbolic";
+        visible: bind template.refresh_button_visible;
         valign: end;
         styles ["circular", "flat"]
     }

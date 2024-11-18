@@ -1,5 +1,9 @@
 [GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Widgets/HeaderPanel.ui")]
 public class HeaderPanel : Gtk.Box {
+    
+    public bool back_button_visible { get; set; default=true; }
+    public bool refresh_button_visible { get; set; default=true; }
+
     [GtkChild]
     private unowned Gtk.Button back_button;
     

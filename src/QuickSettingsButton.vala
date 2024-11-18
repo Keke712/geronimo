@@ -8,6 +8,7 @@ public signal void clicked_extras ();
 
 public string icon { get; set; }
 public string file { get; set; }
+public bool extra_visible { get; set; default=true; }
 
 public bool active {
 	get {
