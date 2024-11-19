@@ -200,6 +200,7 @@ private void update_battery_icon(int displayed_percentage, bool charging) {
 }
 
 private void update_battery() {
+	battery.update_info();
     var percentage = battery.percentage;
 	bool charging;
 	if (battery.state == "charging") {

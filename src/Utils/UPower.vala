@@ -108,7 +108,6 @@ public class Battery : Object {
     }
 }
 
-// Example usage:
 public class UPower : Object {
     public static string get_info(string device) {
         string stdout;
