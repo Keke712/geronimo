@@ -35,12 +35,12 @@ public string pause_icon (AstalMpris.PlaybackStatus status) {
 }
 
 [GtkCallback]
-public string art_url (string url) {
-	if (url == null) {
-		return "";
-	} else {
-		return url.substring (7);
-	}
+public string art_url (string? url) {
+    if (url == null || !url.has_prefix("file://")) {
+        return "";
+    } else {
+        return url.substring (7);
+    }
 }
 
 [GtkCallback]
