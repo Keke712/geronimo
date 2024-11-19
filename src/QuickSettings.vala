@@ -99,9 +99,14 @@ public class QuickSettings : Astal.Window {
                 if (FileUtils.get_contents(BACKLIGHT_PATH + "/brightness", out current_brightness_str)) {
                     int current_brightness = int.parse(current_brightness_str.strip());
                     print("Current brightness: %d\n", current_brightness);
-                    backlight_adjust.value = (double) current_brightness / max_brightness; // CRITICAL
+                    
+                    // Null and type check before setting value
+                    if (backlight_adjust != null && backlight_adjust is Gtk.Adjustment) {
+                        backlight_adjust.value = (double) current_brightness / max_brightness;
+                    } else {
+                        print("Invalid backlight_adjust\n");
+                    }
                 }
-                
             }
         } catch (Error e) {
             print("Failed to initialize backlight: %s\n", e.message);
