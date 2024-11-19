@@ -87,24 +87,18 @@ public class QuickSettings : Astal.Window {
             string max_brightness_str;
             if (FileUtils.get_contents(BACKLIGHT_PATH + "/max_brightness", out max_brightness_str)) {
                 max_brightness = int.parse(max_brightness_str.strip());
-                print("Max brightness: %d\n", max_brightness);
                 backlight_initialized = true;
                 
                 if (max_brightness <= 0) {
-                    print("Invalid max brightness value: %d\n", max_brightness);
                     return;
                 }
                 
                 string current_brightness_str;
                 if (FileUtils.get_contents(BACKLIGHT_PATH + "/brightness", out current_brightness_str)) {
                     int current_brightness = int.parse(current_brightness_str.strip());
-                    print("Current brightness: %d\n", current_brightness);
                     
-                    // Null and type check before setting value
                     if (backlight_adjust != null && backlight_adjust is Gtk.Adjustment) {
                         backlight_adjust.value = (double) current_brightness / max_brightness;
-                    } else {
-                        print("Invalid backlight_adjust\n");
                     }
                 }
             }
@@ -119,25 +113,15 @@ public class QuickSettings : Astal.Window {
             if (FileUtils.get_contents(BACKLIGHT_PATH + "/brightness", out brightness_str)) {
                 
                 int brightness = int.parse(brightness_str.strip());
-                print("Get - Current brightness value: %d\n", brightness);
-                
-                print("Get - Max brightness value: %d\n", max_brightness);
-                
+
                 if (max_brightness > 0) {
                     brightness_pct = (double)brightness / max_brightness;
-                    print("Get - Calculated percentage: %f\n", brightness_pct);
                     var result = "%.0f%%".printf(brightness_pct * 100);
-                    print("Get - Final string result: %s\n", result);
                     return result;
-                } else {
-                    print("Get - Max brightness is zero or negative\n");
                 }
-            } else {
-                print("Get - Failed to read brightness file\n");
             }
             return "N/A";
         } catch (Error e) {
-            print("Failed to get brightness: %s\n", e.message);
             return "N/A";
         }
     }
@@ -147,8 +131,6 @@ public class QuickSettings : Astal.Window {
         if (backlight_initialized) {
             return get_backlight();
         } else {
-            print("Backlight not initialized\n");
-            print("max_brightness: %d\n", max_brightness);
             init_backlight();
             return get_backlight();
         }

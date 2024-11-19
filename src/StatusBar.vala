@@ -89,7 +89,6 @@ construct {
 
 	GLib.Timeout.add(1000, () => {
 		is_initialized = true;
-		print("Initialized\n");
 		return false;
 	});
 }
