@@ -20,7 +20,8 @@ public class CryptoWallet : Gtk.Box {
         crypto_holdings = new HashTable<string, double?>(str_hash, str_equal);
         crypto_holdings.insert("VETUSDT", 12715.20);
         crypto_holdings.insert("GALAUSDT", 10461);
-        crypto_holdings.insert("EGLDUSDC", 3.66);
+        crypto_holdings.insert("OPUSDT", 25.15482);
+        crypto_holdings.insert("FETUSDT", 35.5644);
         
         // Setup header
         header = new HeaderPanel();
