@@ -278,7 +278,6 @@ private static int focused_workspace_id { get; private set; }
 private void init_workspaces () {
 	update_workspace_buttons();
 	setup_workspace_event_handlers ();
-	setup_workspace_scroll ();
 }
 
 private void update_workspace_buttons() {
@@ -311,16 +310,6 @@ private void setup_workspace_event_handlers () {
 		update_workspaces();
 	});
 	hyprland.client_moved.connect (update_workspaces);
-}
-
-private void setup_workspace_scroll () {
-	var scroll = new Gtk.EventControllerScroll (Gtk.EventControllerScrollFlags.VERTICAL);
-	scroll.scroll.connect ((delta_x, delta_y) => {
-			string direction = delta_y > 0 ? "e-1" : "e+1";
-			hyprland.dispatch ("workspace", direction);
-			return true;
-		});
-	workspaces.add_controller (scroll);
 }
 
 private void update_workspaces () {
