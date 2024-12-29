@@ -23,7 +23,7 @@
 
 .quick_settings_button-active {
     border: none;
-    background-color: $accent_color;
+    background-color: mix($dark-color, $highlight-color, 20%);
     transition: background-color 300ms ease-in-out;
 }
 
