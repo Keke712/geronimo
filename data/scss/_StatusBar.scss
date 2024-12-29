@@ -1,8 +1,8 @@
 @import "Colors";
 
 .StatusBar_Master {
-    background-color: transparentize(#282C34, 1);
-    color: white;
+    background-color: transparent;
+    color: $light-color;
     min-height: 25px;
     border-radius: $master-border-radius;
     padding: 0 5px;
@@ -45,7 +45,7 @@
 }
 
 .empty {
-    color: rgba($color: #000000, $alpha: 0.3);
+    color: rgba($color: $dark-color, $alpha: 0.3);
 }
 
 .charging {
@@ -53,11 +53,11 @@
 }
 
 .low {
-    color: rgba($color: rgb(167, 0, 0), $alpha: 1.0);
+    color: rgba(167, 0, 0, 1.0);
 }
 
 .dynamic_box {
-    background: rgba($color: #000, $alpha: 0.5);
+    background: rgba($color: $dark-color, $alpha: 0.5);
     min-width: 200px;
     border-radius: 0 0 10px 10px;
 }

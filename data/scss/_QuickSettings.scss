@@ -5,7 +5,7 @@
 }
 
 .quick_settings_grid_box {
-    background-color: rgba($color: #132132, $alpha: 0.8);
+    background-color: $back-color;
     padding: 10px;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .quick_settings_button-active button:hover {
-    background-color: rgba($color: #000000, $alpha: 0.5);
+    background-color: rgba($dark-color, 0.5);
 }
 
 .separator-label {

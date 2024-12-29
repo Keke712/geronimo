@@ -5,8 +5,8 @@
 }
 
 .runner_master_box {
-    background-color: rgba(40, 44, 52, 0.8); /* Instead of transparentize() */
-    border-radius: $master-border-radius; /* Using GTK variable syntax */
+    background-color: rgba($back-color, 0.8);
+    border-radius: $master-border-radius;
     border: none;
     padding: 10px;
     min-width: 555px;
@@ -19,7 +19,22 @@
 
 .runner_button {
     padding: 10px;
-    background-color: #212229;
+    background-color: mix($back-color, $accent_color, 90%);
+    color: $light-color;
     margin: 5px 0;
-    border-radius: 8px; /* Fixed value instead of $accent-color */
+    border-radius: 8px;
+}
+
+.search-entry {
+    background-color: rgba($light-color, 0.1);
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: $light-color;
+    font-size: 16px;
+    transition: background-color 200ms ease-in-out, box-shadow 200ms ease-in-out;
+
+    &:focus-within {
+        background-color: rgba($light-color, 0.2);
+        box-shadow: 0 0 5px rgba($accent_color, 0.5);
+    }
 }

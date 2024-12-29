@@ -24,6 +24,9 @@ template $Runner: Astal.Window {
             ]
 
             Entry entry {
+                styles [
+                    "search-entry"
+                ]
                 primary-icon-name: "system-search-symbolic";
                 changed => $update_list();
                 activate => $launch_first_runner_button();
