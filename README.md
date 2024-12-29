@@ -90,7 +90,8 @@ nix run github:Keke712/geronimo -- --help
 - [ ] Dynamic CSS
 
 ## Preview
-![Geronimo](public/geronimo.webp)
+![Geronimo](public/geronimo.png)
+![Runner](public/geronimo_runner.png)
 
 > [!NOTE]  
 > The preview was made with 'Arc-dark' theme.
