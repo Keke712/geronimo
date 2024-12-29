@@ -1,4 +1,3 @@
-
 using AstalHyprland;
 using GtkLayerShell;
 
@@ -34,7 +33,7 @@ public unowned Gtk.Button apps_button;
 public unowned Gtk.Box dynamic_box;
 
 [GtkChild]
-public unowned Gtk.Label clock;
+public unowned Gtk.Button clock_button;
 
 [GtkChild]
 public unowned Gtk.Box volume_osd;
@@ -56,9 +55,6 @@ public unowned Gtk.Button power_button;
 
 [GtkChild]
 public unowned Gtk.Image battery_icon;
-
-[GtkChild]
-public unowned Gtk.Label crypto_account;
 
 // Workspace icon
 private static string wicon = "󰝥 ";
@@ -84,8 +80,15 @@ construct {
 	init_clock ();
 	init_battery();
 	init_island();
+	hover_clock();
 
 	setup_event_handlers();
+
+    // Remove the clock_button click callback
+    // clock_button.clicked.connect(() => {
+    //     var center_panel = new CenterPanel();
+    //     center_panel.present();
+    // });
 
 	GLib.Timeout.add(1000, () => {
 		is_initialized = true;
@@ -225,7 +228,7 @@ private bool using_clock = true;
 
 private void update_clock () {
 	var clock_time = new DateTime.now_local ();
-	clock.label = clock_time.format ("%H:%M");
+	clock_button.label = clock_time.format ("%H:%M");
 }
 
 private void init_clock () {
@@ -234,6 +237,71 @@ private void init_clock () {
 			if (using_clock) { update_clock (); }
 			return true;
 		});
+}
+
+private CenterPanel center_panel = CenterPanel.get_instance();
+private bool is_mouse_over_calendar;
+private bool is_mouse_over_clock;
+
+private void expand_dynamic() {
+	GLib.Timeout.add (10, () => {
+		int cp_width = center_panel.get_allocated_width();
+		dynamic_box.set_size_request(cp_width, -1); // Set width based on center_panel
+		dynamic_box.queue_draw();
+		
+		return false;
+	});
+}
+
+private void collapse_dynamic() {
+	dynamic_box.set_size_request(-1, -1); // Reset to default width
+	dynamic_box.queue_draw();
+}
+
+private void do_action() {
+	if (!is_mouse_over_clock && !is_mouse_over_calendar) {
+		GLib.Timeout.add (50, () => {
+			if (!is_mouse_over_clock && !is_mouse_over_calendar){
+				dynamic_box.remove_css_class("expanded");
+				collapse_dynamic();
+				center_panel.hide_panel();
+			}
+			
+			return false;
+		});
+	}else{
+		dynamic_box.add_css_class("expanded");
+		expand_dynamic();
+		center_panel.show_panel();
+	}
+}
+
+private void hover_clock () {
+
+    // HOVER CALENDAR
+    var hover_controller_calendar = new Gtk.EventControllerMotion();
+    hover_controller_calendar.enter.connect(() => {
+        is_mouse_over_calendar = true;
+		do_action();
+    });
+    hover_controller_calendar.leave.connect(() => {
+		is_mouse_over_calendar = false;
+		do_action();
+    });
+    center_panel.centerpanel_box.add_controller(hover_controller_calendar);
+
+	// HOVER CLOCK
+    var hover_controller_button = new Gtk.EventControllerMotion();
+    hover_controller_button.enter.connect(() => {
+		is_mouse_over_clock = true;
+		do_action();
+		expand_dynamic();  // Ensure dynamic island expands immediately
+    });
+    hover_controller_button.leave.connect(() => {
+		is_mouse_over_clock = false;
+		do_action();
+    });
+    clock_button.add_controller(hover_controller_button);
 }
 
 // Dynamic island methods
@@ -245,7 +313,7 @@ private void init_island () {
     // Connecte l'événement sans paramètres
 	speaker.notify["volume"].connect(() => {
 		if (is_initialized) {
-        	clock.visible = false;
+        	clock_button.visible = false;
 			volume_osd.visible = true;
 			handle_timeout();
 		}
@@ -262,7 +330,7 @@ private void handle_timeout() {
 	// Set a new timeout
 	hide_timeout_id = GLib.Timeout.add(3000, () => {
         // Définition d'un nouveau timeout pour masquer le volume
-		clock.visible = true;
+		clock_button.visible = true;
         volume_osd.visible = false;
 		
 

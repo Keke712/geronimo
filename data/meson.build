@@ -3,6 +3,7 @@ subdir('scss')
 targets = files(
     'ui/QuickSettings.blp',
     'ui/QuickSettingsButton.blp',
+    'ui/CenterPanel.blp',
     'ui/Runner.blp',
     'ui/RunnerButton.blp',
     'ui/StatusBar.blp',

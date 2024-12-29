@@ -3,6 +3,7 @@ source_files = [
     'App.vala',
     'StatusBar.vala',
     'QuickSettings.vala',
+    'CenterPanel.vala',
     'QuickSettingsButton.vala',
     'Runner.vala',
     'RunnerButton.vala',

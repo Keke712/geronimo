@@ -62,6 +62,14 @@
     border-radius: 0 0 10px 10px;
 }
 
+.dynamic_box button:hover {
+    background-color: transparent;
+}
+
+.clock_button {
+    border:none;
+}
+
 .StatusBar_label {
     font-size: 16px;
 }
@@ -82,4 +90,8 @@
             all: unset;
         }
     }
+}
+
+.expanded {
+    border-radius: 0 0 0 0;
 }

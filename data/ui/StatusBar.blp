@@ -39,10 +39,11 @@ template $StatusBar: Astal.Window {
             "dynamic_box"
         ]
 
-        Label clock {
-            name: "clock";
-            width-request: 200;
+        Button clock_button {
+            name: "clock_button";
+            styles[ "clock_button" ]
             visible: true;
+            hexpand: true;
         }
 
         Box volume_osd {
@@ -135,16 +136,6 @@ template $StatusBar: Astal.Window {
       styles [
         "right_box"
       ]
-
-      Box crypto_box {
-        styles [ "crypto_box" ]
-
-        Gtk.Label crypto_account {
-            styles [
-                "crypto_account"
-            ]
-        }
-      }
 
       Box battery_box {
         spacing: 5;

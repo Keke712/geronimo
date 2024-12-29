@@ -1,0 +1,44 @@
+using Gtk 4.0;
+using Astal 4.0;
+
+template $CenterPanel: Astal.Window {
+    styles [
+        "centerpanel_window"
+    ]
+
+    EventControllerKey {
+        key-released => $key_released();
+    }
+
+    Revealer {
+        transition-duration: 300;
+        transition-type: slide_up;
+        reveal-child: bind template.visible;
+
+        Box centerpanel_box {
+            orientation: vertical;
+
+            styles [
+                "centerpanel_master_box"
+            ]
+
+            // Calendar Grid (1:1)
+            Box {
+                styles ["calendar-container"]
+                margin-start: 10;
+                margin-end: 10;
+                margin-top: 15;
+                margin-bottom: 10;
+
+                Gtk.Calendar calendar {
+                    hexpand: true;
+                    vexpand: true;
+
+                    styles [
+                        "quick_settings_grid_box"
+                    ]
+                }
+            }
+        }
+    }
+}
