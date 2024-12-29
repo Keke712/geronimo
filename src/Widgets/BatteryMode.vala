@@ -15,6 +15,9 @@ public class BatteryMode : Gtk.Box {
     [GtkChild]
     private unowned Gtk.Label capacity_left;
 
+    [GtkChild]
+    private unowned Gtk.Label uptime_label;
+
     private Battery battery;
     private HeaderPanel header;
 
@@ -41,6 +44,9 @@ public class BatteryMode : Gtk.Box {
         setup_signals();
         update_labels(1000);
 
+        // Start uptime timer
+        uptime();
+
         // Setup the checked button
         var pwp = get_powerprofile();
         switch (pwp) {
@@ -63,6 +69,26 @@ public class BatteryMode : Gtk.Box {
     }
 
     // UI COMPONENTS METHODS
+
+    private void uptime() {
+        update_uptime();
+        GLib.Timeout.add(60000, () => {
+            update_uptime();
+            return true;
+        });
+    }
+
+    private void update_uptime() {
+        try {
+            string stdout;
+            Process.spawn_command_line_sync("uptime -p", out stdout);
+            if (uptime_label != null) {
+                uptime_label.label = stdout.strip();
+            }
+        } catch (Error e) {
+            warning("Failed to get uptime: %s", e.message);
+        }
+    }
 
     private void setup_signals() {
         powersaver_button.clicked.connect(() => {

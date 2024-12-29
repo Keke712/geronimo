@@ -23,9 +23,6 @@ public class QuickSettings : Astal.Window {
     private unowned Gtk.Label backlight_label;
     
     [GtkChild]
-    private unowned Gtk.Label uptime_label;
-    
-    [GtkChild]
     private unowned Adw.Carousel players;
 
     public QuickSettings () {
@@ -72,8 +69,7 @@ public class QuickSettings : Astal.Window {
             mpris.player_closed.connect (on_player_removed);
         }
 
-        // Start uptime timer
-        uptime();
+        
     }
 
     private const string BACKLIGHT_PATH = "/sys/class/backlight/intel_backlight";
@@ -266,26 +262,6 @@ public class QuickSettings : Astal.Window {
             players.remove(playing_widget);
             players.insert(playing_widget, 0);
             players.scroll_to(playing_widget, true);
-        }
-    }
-
-    private void uptime() {
-        update_uptime();
-        GLib.Timeout.add(60000, () => {
-            update_uptime();
-            return true;
-        });
-    }
-
-    private void update_uptime() {
-        try {
-            string stdout;
-            Process.spawn_command_line_sync("uptime -p", out stdout);
-            if (uptime_label != null) {
-                uptime_label.label = stdout.strip();
-            }
-        } catch (Error e) {
-            warning("Failed to get uptime: %s", e.message);
         }
     }
 

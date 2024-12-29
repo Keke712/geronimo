@@ -17,19 +17,19 @@ template $BatteryMode : Box {
         Button powersaver_button {
             icon-name: bind $call_icon("power-saver") as <string>;
             hexpand: true;
-            styles ["battery-button", "low"]
+            styles ["battery-button"]
         }
 
         Button balanced_button {
             icon-name: bind $call_icon("balanced") as <string>;
             hexpand: true;
-            styles ["battery-button", "medium"]
+            styles ["battery-button"]
         }
 
         Button performance_button {
             icon-name: bind $call_icon("performance") as <string>;
             hexpand: true;
-            styles ["battery-button", "high"]
+            styles ["battery-button"]
         }
     }
 
@@ -48,5 +48,7 @@ template $BatteryMode : Box {
             label: "";
             styles ["info-label"]
         }
+
+        Label uptime_label { label:""; styles ["info-label"] }
     }
 }

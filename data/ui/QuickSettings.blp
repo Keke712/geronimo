@@ -46,85 +46,6 @@ template $QuickSettings: Astal.Window {
                 }
             } */
 
-            
-
-            // Backlight Slider (Box)
-            Gtk.Box {
-                layout {
-                    row: 1;
-                    column: 0;
-                    row-span: 1;
-                }
-
-                hexpand: true;
-                vexpand: true;
-
-                Image {
-                    icon-name: "display-brightness-symbolic";
-                }
-
-                Scale {
-                    hexpand: true;
-
-                    adjustment: Adjustment backlight_adjust {
-                        lower: 0;
-                        upper: 1;
-                    };
-
-                    styles [
-                        "geronimo_slider"
-                    ]
-
-                }
-
-                Label backlight_label {
-                    label: bind $update_backlight() as <string>;
-                    width-request: 50;
-                }
-
-                styles [
-                    "quick_settings_grid_box"
-                ]
-            }
-
-            // Volume Slider (Box)
-            Gtk.Box {
-                layout {
-                    row: 2;
-                    column: 0;
-                    row-span: 1;
-                }
-
-                hexpand: true;
-                vexpand: true;
-
-                Image {
-                    icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
-                }
-
-                Scale {
-                    hexpand: true;
-
-                    adjustment: Adjustment vol_adjust {
-                        lower: 0;
-                        upper: 1;
-                    };
-
-                    styles [
-                        "geronimo_slider"
-                    ]
-                }
-
-                Label {
-                    label: bind $current_volume(template.speaker as <AstalWp.Endpoint>.volume) as <string>;
-                    width-request: 50;
-                }
-
-                styles [
-                    "quick_settings_grid_box"
-                ]
-            }
-
             Grid {
                 layout {
                     row: 0;
@@ -194,21 +115,97 @@ template $QuickSettings: Astal.Window {
                 }
             }
 
-            // Power Menu Info
+            // Backlight Slider (Box)
+            Gtk.Box {
+                layout {
+                    row: 3;
+                    column: 1;
+                    row-span: 1;
+                }
+
+                hexpand: true;
+                vexpand: true;
+
+                Image {
+                    icon-name: "display-brightness-symbolic";
+                }
+
+                Scale {
+                    hexpand: true;
+
+                    adjustment: Adjustment backlight_adjust {
+                        lower: 0;
+                        upper: 1;
+                    };
+
+                    styles [
+                        "geronimo_slider"
+                    ]
+
+                }
+
+                Label backlight_label {
+                    label: bind $update_backlight() as <string>;
+                    width-request: 50;
+                }
+
+                styles [
+                    "quick_settings_grid_box"
+                ]
+            }
+
+            // Volume Slider (Box)
             Gtk.Box {
                 layout {
                     row: 4;
-                    column: 0;
-                    column-span: 2;
+                    column: 1;
+                    row-span: 1;
                 }
 
+                hexpand: true;
+                vexpand: true;
+
+                Image {
+                    icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
+                }
+
+                Scale {
+                    hexpand: true;
+
+                    adjustment: Adjustment vol_adjust {
+                        lower: 0;
+                        upper: 1;
+                    };
+
+                    styles [
+                        "geronimo_slider"
+                    ]
+                }
+
+                Label {
+                    label: bind $current_volume(template.speaker as <AstalWp.Endpoint>.volume) as <string>;
+                    width-request: 50;
+                }
+
+                styles [
+                    "quick_settings_grid_box"
+                ]
+            }
+
+            // Power Menu Info
+            Gtk.Box {
+                layout {
+                    row: 5;
+                    column: 1;
+                    column-span: 1;
+                }
+
+                width-request: 350;
                 hexpand: true;
 
                 styles [
                     "quick_settings_grid_box"
                 ]
-
-                Label uptime_label {}
 
                 Box {
                     hexpand: true;

@@ -22,6 +22,8 @@ public class CryptoWallet : Gtk.Box {
         crypto_holdings.insert("GALAUSDT", 10461);
         crypto_holdings.insert("OPUSDT", 25.15482);
         crypto_holdings.insert("FETUSDT", 35.5644);
+        crypto_holdings.insert("SUIUSDT", 11.2);
+        crypto_holdings.insert("INJUSDT", 1.73926);
         
         // Setup header
         header = new HeaderPanel();

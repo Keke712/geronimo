@@ -4,7 +4,8 @@ public errordomain CryptoError {
 }
 
 public class Crypto : GLib.Object {
-    private string api_base_url = "https://api.hitbtc.com/api/2/public/ticker/";
+    // Exemple: https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT
+    private string api_base_url = "https://api.binance.com/api/v3/ticker/price?symbol=";
     private Soup.Session session;
 
     public Crypto() {
@@ -27,7 +28,7 @@ public class Crypto : GLib.Object {
             var root = parser.get_root();
             var obj = root.get_object();
             
-            string price_str = obj.get_string_member("last");
+            string price_str = obj.get_string_member("price");
             return double.parse(price_str);
         } catch (GLib.Error e) {
             stderr.printf("Erreur lors de la récupération du prix: %s\n", e.message);
