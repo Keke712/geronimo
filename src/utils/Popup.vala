@@ -1,5 +1,5 @@
 
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Utils/Popup.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/utils/Popup.ui")]
 public class Popup : Astal.Window {
     // créer une instance statique de la classe QuickSettings
     private static Popup? instance;

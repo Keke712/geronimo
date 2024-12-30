@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Widgets/HeaderPanel.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/widgets/HeaderPanel.ui")]
 public class HeaderPanel : Gtk.Box {
     
     public bool back_button_visible { get; set; default=true; }

@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Widgets/BatteryMode.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/widgets/BatteryMode.ui")]
 public class BatteryMode : Gtk.Box {
     [GtkChild]
     private unowned Gtk.Button powersaver_button;

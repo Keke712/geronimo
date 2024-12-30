@@ -3,19 +3,19 @@
     <gresource prefix="/com/github/Keke712/geronimo">
         <file>geronimo.css</file>
         <file preprocess="xml-stripblanks">ui/StatusBar.ui</file>
-        <file preprocess="xml-stripblanks">ui/QuickSettingsButton.ui</file>
         <file preprocess="xml-stripblanks">ui/QuickSettings.ui</file>
         <file preprocess="xml-stripblanks">ui/CenterPanel.ui</file>
 
-        <file preprocess="xml-stripblanks">ui/Widgets/Mpris.ui</file>
-        <file preprocess="xml-stripblanks">ui/Widgets/QuickPanel.ui</file>
-        <file preprocess="xml-stripblanks">ui/Widgets/NetworkPanel.ui</file>
-        <file preprocess="xml-stripblanks">ui/Widgets/BluetoothPanel.ui</file>
-        <file preprocess="xml-stripblanks">ui/Widgets/CryptoWallet.ui</file>
-        <file preprocess="xml-stripblanks">ui/Widgets/BatteryMode.ui</file>
-        <file preprocess="xml-stripblanks">ui/Widgets/HeaderPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/utils/FlatButton.ui</file>
+        <file preprocess="xml-stripblanks">ui/utils/Popup.ui</file>
 
-        <file preprocess="xml-stripblanks">ui/Utils/Popup.ui</file>
+        <file preprocess="xml-stripblanks">ui/widgets/Mpris.ui</file>
+        <file preprocess="xml-stripblanks">ui/widgets/QuickPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/widgets/NetworkPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/widgets/BluetoothPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/widgets/CryptoWallet.ui</file>
+        <file preprocess="xml-stripblanks">ui/widgets/BatteryMode.ui</file>
+        <file preprocess="xml-stripblanks">ui/widgets/HeaderPanel.ui</file>
         
         <file preprocess="xml-stripblanks">ui/Runner.ui</file>
         <file preprocess="xml-stripblanks">ui/RunnerButton.ui</file>

@@ -1,25 +1,26 @@
 source_files = [
-    'Main.vala',
-    'App.vala',
+    'core/Main.vala',
+    'core/App.vala',
+    
     'StatusBar.vala',
     'QuickSettings.vala',
     'CenterPanel.vala',
-    'QuickSettingsButton.vala',
     'Runner.vala',
     'RunnerButton.vala',
 
-    'Widgets/QuickPanel.vala',
-    'Widgets/Mpris.vala',
-    'Widgets/NetworkPanel.vala',
-    'Widgets/BluetoothPanel.vala',
-    'Widgets/CryptoWallet.vala',
-    'Widgets/BatteryMode.vala',
-    'Widgets/HeaderPanel.vala',
+    'widgets/QuickPanel.vala',
+    'widgets/Mpris.vala',
+    'widgets/NetworkPanel.vala',
+    'widgets/BluetoothPanel.vala',
+    'widgets/CryptoWallet.vala',
+    'widgets/BatteryMode.vala',
+    'widgets/HeaderPanel.vala',
 
-    'Utils/Popup.vala',
-    'Utils/Crypto.vala',
-    'Utils/Calculator.vala',
-    'Utils/UPower.vala',
+    'utils/FlatButton.vala',
+    'utils/Popup.vala',
+    'utils/Crypto.vala',
+    'utils/Calculator.vala',
+    'utils/UPower.vala',
 ]
 
 executable(

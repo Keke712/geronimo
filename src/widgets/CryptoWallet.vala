@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Widgets/CryptoWallet.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/widgets/CryptoWallet.ui")]
 public class CryptoWallet : Gtk.Box {
     [GtkChild]
     private unowned Gtk.Box accounts;

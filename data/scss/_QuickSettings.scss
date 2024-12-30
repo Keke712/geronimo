@@ -9,28 +9,6 @@
     padding: 10px;
 }
 
-.quick_settings_button {
-    background: none;
-    border: none;
-    min-height: 60px;
-    min-width: 100px;
-}
-
-.quick_settings_button button {
-    border-radius: 0;
-    border: none;
-}
-
-.quick_settings_button-active {
-    border: none;
-    background-color: mix($dark-color, $highlight-color, 20%);
-    transition: background-color 300ms ease-in-out;
-}
-
-.quick_settings_button-active button:hover {
-    background-color: rgba($dark-color, 0.5);
-}
-
 .separator-label {
     font-weight: 600;
     opacity: 0.7;

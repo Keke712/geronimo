@@ -1,5 +1,5 @@
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/QuickSettingsButton.ui")]
-public class QuickSettingsButton : Gtk.Box {
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/utils/FlatButton.ui")]
+public class FlatButton : Gtk.Box {
 
 public AstalNetwork.Network network { get; set; }
 
@@ -12,24 +12,24 @@ public bool extra_visible { get; set; default=true; }
 
 public bool active {
 	get {
-		return this.has_css_class ("quick_settings_button-active");
+		return this.has_css_class ("flatbutton-active");
 	}
 	set {
 		if (value)
-			this.add_css_class ("quick_settings_button-active");
+			this.add_css_class ("flatbutton-active");
 		else
-			this.remove_css_class ("quick_settings_button-active");
+			this.remove_css_class ("flatbutton-active");
 	}
 }
 public bool inactive {
 	get {
-		return !this.has_css_class ("quick_settings_button-active");
+		return !this.has_css_class ("flatbutton-active");
 	}
 	set {
 		if (!value)
-			this.add_css_class ("quick_settings_button-active");
+			this.add_css_class ("flatbutton-active");
 		else
-			this.remove_css_class ("quick_settings_button-active");
+			this.remove_css_class ("flatbutton-active");
 	}
 }
 
@@ -44,11 +44,11 @@ public void on_clicked_extras () {
 }
 
 static construct {
-	set_css_name ("quick_settings_button");
+	set_css_name ("flatbutton");
 }
-QuickSettingsButton () {
+FlatButton () {
 	Object (
-		name: "QuickSettingsButton"
+		name: "FlatButton"
 		);
 	network = AstalNetwork.get_default ();
 }

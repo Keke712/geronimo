@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Widgets/NetworkPanel.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/widgets/NetworkPanel.ui")]
 public class NetworkPanel : Gtk.Box {
     [GtkChild]
     private unowned Gtk.ListView networks_list;

@@ -8,7 +8,7 @@ template $QuickPanel: Grid {
     column-spacing: 10;
     row-spacing: 10;
 
-    $QuickSettingsButton {
+    $FlatButton {
         clicked => $network_clicked();
         clicked_extras => $network_clicked_extras();
 
@@ -21,7 +21,7 @@ template $QuickPanel: Grid {
         }
     }
 
-    $QuickSettingsButton {
+    $FlatButton {
         clicked => $bluetooth_clicked();
         clicked_extras => $bluetooth_clicked_extras();
 
@@ -34,7 +34,7 @@ template $QuickPanel: Grid {
         }
     }
 
-    $QuickSettingsButton {
+    $FlatButton {
         layout {
             row: 1;
             column: 0;
@@ -46,7 +46,7 @@ template $QuickPanel: Grid {
         clicked_extras => $on_notif_arrow_clicked();
     }
 
-    $QuickSettingsButton {
+    $FlatButton {
         icon: bind $active_vpn(template.network) as <string>;
         clicked => $toggle_vpn();
 
@@ -56,7 +56,7 @@ template $QuickPanel: Grid {
         }
     }
 
-    $QuickSettingsButton {
+    $FlatButton {
         icon: "wallet-open";
         extra_visible: false;
         clicked => $cryptowallet_clicked();
@@ -67,7 +67,7 @@ template $QuickPanel: Grid {
         }
     }
 
-    $QuickSettingsButton battery_mode_button {
+    $FlatButton battery_mode_button {
         clicked => $call_switch();
         clicked_extras => $on_battery_extras();
 

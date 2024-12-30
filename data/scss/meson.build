@@ -10,6 +10,7 @@ scss_deps = files(
     '_Popup.scss',
     '_BatteryMode.scss',
     '_CenterPanel.scss',
+    '_Button.scss',
     'main.scss',
 )
 

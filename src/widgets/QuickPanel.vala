@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/Widgets/QuickPanel.ui")]
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/widgets/QuickPanel.ui")]
 public class QuickPanel : Gtk.Grid {
     // Properties
     public AstalNetwork.Network network { get; set; }
@@ -6,7 +6,7 @@ public class QuickPanel : Gtk.Grid {
     public AstalNotifd.Notifd notifd { get; private set; }
 
     [GtkChild]
-    private unowned QuickSettingsButton battery_mode_button;
+    private unowned FlatButton battery_mode_button;
 
     private string battery_mode_icon;
     private string current_mode;
