@@ -239,7 +239,7 @@ private void init_clock () {
 		});
 }
 
-private CenterPanel center_panel = CenterPanel.get_instance();
+private DynamicIsland center_panel = DynamicIsland.get_instance();
 private bool is_mouse_over_calendar;
 private bool is_mouse_over_clock;
 
@@ -288,7 +288,7 @@ private void hover_clock () {
 		is_mouse_over_calendar = false;
 		do_action();
     });
-    center_panel.centerpanel_box.add_controller(hover_controller_calendar);
+    center_panel.dynamicisland_box.add_controller(hover_controller_calendar);
 
 	// HOVER CLOCK
     var hover_controller_button = new Gtk.EventControllerMotion();

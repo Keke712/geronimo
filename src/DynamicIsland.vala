@@ -1,13 +1,13 @@
 using GtkLayerShell;
 using Gtk;
 
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/CenterPanel.ui")]
-public class CenterPanel : Astal.Window {
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/DynamicIsland.ui")]
+public class DynamicIsland : Astal.Window {
 
     [GtkChild]
-    public unowned Gtk.Box centerpanel_box;
+    public unowned Gtk.Box dynamicisland_box;
 
-    private static CenterPanel? instance;
+    private static DynamicIsland? instance;
 
     [GtkCallback]
     public void key_released(uint keyval) {
@@ -16,19 +16,16 @@ public class CenterPanel : Astal.Window {
         }
     }
 
-    public CenterPanel() {
+    public DynamicIsland() {
         Object (
             anchor: Astal.WindowAnchor.TOP,
             margin_top: 0 // Changed from 20 to 5 to position the panel higher
         );
-    
-        // Set the background color to black
-        this.add_css_class("center-panel-black");   
     }
 
-    public static CenterPanel get_instance() {
+    public static DynamicIsland get_instance() {
         if (instance == null) {
-            instance = new CenterPanel();
+            instance = new DynamicIsland();
         }
         return instance;
     }

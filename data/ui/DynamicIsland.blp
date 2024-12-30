@@ -1,9 +1,9 @@
 using Gtk 4.0;
 using Astal 4.0;
 
-template $CenterPanel: Astal.Window {
+template $DynamicIsland: Astal.Window {
     styles [
-        "centerpanel_window"
+        "dynamicisland_window"
     ]
 
     EventControllerKey {
@@ -15,11 +15,11 @@ template $CenterPanel: Astal.Window {
         transition-type: slide_up;
         reveal-child: bind template.visible;
 
-        Box centerpanel_box {
+        Box dynamicisland_box {
             orientation: vertical;
 
             styles [
-                "centerpanel_master_box"
+                "dynamicisland_master"
             ]
 
             // Calendar Grid (1:1)

@@ -4,7 +4,7 @@ source_files = [
     
     'StatusBar.vala',
     'QuickSettings.vala',
-    'CenterPanel.vala',
+    'DynamicIsland.vala',
     'Runner.vala',
     'RunnerButton.vala',
 

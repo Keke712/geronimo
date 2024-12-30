@@ -4,7 +4,7 @@
         <file>geronimo.css</file>
         <file preprocess="xml-stripblanks">ui/StatusBar.ui</file>
         <file preprocess="xml-stripblanks">ui/QuickSettings.ui</file>
-        <file preprocess="xml-stripblanks">ui/CenterPanel.ui</file>
+        <file preprocess="xml-stripblanks">ui/DynamicIsland.ui</file>
 
         <file preprocess="xml-stripblanks">ui/utils/FlatButton.ui</file>
         <file preprocess="xml-stripblanks">ui/utils/Popup.ui</file>
