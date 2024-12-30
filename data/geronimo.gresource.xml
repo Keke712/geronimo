@@ -3,7 +3,7 @@
     <gresource prefix="/com/github/Keke712/geronimo">
         <file>geronimo.css</file>
         <file preprocess="xml-stripblanks">ui/StatusBar.ui</file>
-        <file preprocess="xml-stripblanks">ui/QuickSettings.ui</file>
+        <file preprocess="xml-stripblanks">ui/ControlPanel.ui</file>
         <file preprocess="xml-stripblanks">ui/DynamicIsland.ui</file>
 
         <file preprocess="xml-stripblanks">ui/utils/FlatButton.ui</file>

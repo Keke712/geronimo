@@ -29,7 +29,7 @@ public class CryptoWallet : Gtk.Box {
         header = new HeaderPanel();
         header.title = "Cryptocurrencies";
         header.on_back_clicked.connect(() => {
-            QuickSettings.get_instance().show_panel("quick");
+            ControlPanel.get_instance().show_panel("quick");
         });
         header.on_refresh_clicked.connect(() => {
             update_all_crypto_prices.begin();

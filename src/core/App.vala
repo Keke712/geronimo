@@ -43,7 +43,7 @@ public override void activate(){
 	}
 
 	add_window (new StatusBar ());
-	add_window (new QuickSettings ());
+	add_window (new ControlPanel ());
 	add_window (new Runner ());
 	add_window (new Popup ());
 

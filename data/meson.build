@@ -4,7 +4,7 @@ targets = files(
     'ui/utils/FlatButton.blp',
     'ui/utils/Popup.blp',
 
-    'ui/QuickSettings.blp',
+    'ui/ControlPanel.blp',
     'ui/DynamicIsland.blp',
     'ui/Runner.blp',
     'ui/RunnerButton.blp',

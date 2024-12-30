@@ -1,9 +1,9 @@
 using GtkLayerShell;
 
-[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/QuickSettings.ui")]
-public class QuickSettings : Astal.Window {
-    // créer une instance statique de la classe QuickSettings
-    private static QuickSettings? instance;
+[GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/ControlPanel.ui")]
+public class ControlPanel : Astal.Window {
+    // créer une instance statique de la classe ControlPanel
+    private static ControlPanel? instance;
 
     public AstalWp.Endpoint speaker { get; set; }
     public AstalMpris.Mpris mpris {get; private set;}
@@ -11,7 +11,7 @@ public class QuickSettings : Astal.Window {
     public const int n_grid_buttons = 10;
 
     [GtkChild]
-    private unowned Gtk.Grid quick_settings_grid;
+    private unowned Gtk.Grid control_panel_grid;
 
     [GtkChild]
     private unowned Gtk.Adjustment vol_adjust;
@@ -25,7 +25,7 @@ public class QuickSettings : Astal.Window {
     [GtkChild]
     private unowned Adw.Carousel players;
 
-    public QuickSettings () {
+    public ControlPanel () {
         Object (
             anchor: Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT,
             margin_top: 10,
@@ -37,7 +37,7 @@ public class QuickSettings : Astal.Window {
     }
 
     // Method pour chopper l'instance depuis n'importe où
-    public static QuickSettings get_instance() {
+    public static ControlPanel get_instance() {
         return instance;
     }
 
@@ -170,36 +170,36 @@ public class QuickSettings : Astal.Window {
     }
 
     private void clear_panel() {
-        var child = quick_settings_grid.get_first_child();
+        var child = control_panel_grid.get_first_child();
         while (child != null) {
-            quick_settings_grid.remove(child);
-            child = quick_settings_grid.get_first_child();
+            control_panel_grid.remove(child);
+            child = control_panel_grid.get_first_child();
         }
     }
 
     private void setup_quick_panel() {
         QuickPanel quick_panel = new QuickPanel();
-        quick_settings_grid.attach(quick_panel, 0, 0, 1, 1);
+        control_panel_grid.attach(quick_panel, 0, 0, 1, 1);
     }
 
     private void setup_network_panel() {
         NetworkPanel network_panel = new NetworkPanel();
-        quick_settings_grid.attach(network_panel, 0, 0, 1, 1);
+        control_panel_grid.attach(network_panel, 0, 0, 1, 1);
     }
 
     private void setup_bluetooth_panel() {
         BluetoothPanel bluetooth_panel = new BluetoothPanel();
-        quick_settings_grid.attach(bluetooth_panel, 0, 0, 1, 1);
+        control_panel_grid.attach(bluetooth_panel, 0, 0, 1, 1);
     }
 
     private void setup_crypto_panel() {
         CryptoWallet crypto_wallet = new CryptoWallet();
-        quick_settings_grid.attach(crypto_wallet, 0, 0, 1, 1);
+        control_panel_grid.attach(crypto_wallet, 0, 0, 1, 1);
     }
 
     private void setup_battery_panel() {
         BatteryMode battery_mode = new BatteryMode();
-        quick_settings_grid.attach(battery_mode, 0, 0, 1, 1);
+        control_panel_grid.attach(battery_mode, 0, 0, 1, 1);
     }
 
     public void show_panel(string panel) {
@@ -313,7 +313,7 @@ public class QuickSettings : Astal.Window {
     public void init_layer_properties() {
         GtkLayerShell.init_for_window(this);
         GtkLayerShell.set_layer(this, GtkLayerShell.Layer.TOP);
-        GtkLayerShell.set_namespace(this, "QuickSettings");
+        GtkLayerShell.set_namespace(this, "ControlPanel");
 
         GtkLayerShell.set_anchor(this, GtkLayerShell.Edge.TOP, true);
         GtkLayerShell.set_anchor(this, GtkLayerShell.Edge.RIGHT, true);

@@ -19,7 +19,7 @@ public class NetworkPanel : Gtk.Box {
         header = new HeaderPanel();
         header.title = "Wi-Fi Networks";
         header.on_back_clicked.connect(() => {
-            QuickSettings.get_instance().show_panel("quick");
+            ControlPanel.get_instance().show_panel("quick");
         });
         header.on_refresh_clicked.connect(() => {
             scan_networks();
@@ -69,15 +69,15 @@ public class NetworkPanel : Gtk.Box {
                         network.wifi.enabled = true;
                     }
 
-                    var quick_settings = QuickSettings.get_instance();
+                    var control_panel = ControlPanel.get_instance();
                     var popup = Popup.get_instance();
                     Geronimo.instance.toggle_window("Popup");
 
                     popup.update_title(selected_ap.ssid);
 
                     this.visible = false;
-                    quick_settings.show_panel("quick");
-                    quick_settings.visible = false;
+                    control_panel.show_panel("quick");
+                    control_panel.visible = false;
                 } catch (Error e) {
                     stderr.printf("Connection error: %s\n", e.message);
                 }

@@ -24,7 +24,7 @@ public class BluetoothPanel : Gtk.Box {
         header = new HeaderPanel();
         header.title = "Bluetooth Devices";
         header.on_back_clicked.connect(() => {
-            QuickSettings.get_instance().show_panel("quick");
+            ControlPanel.get_instance().show_panel("quick");
         });
         header.on_refresh_clicked.connect(() => {
             scan_devices.begin();

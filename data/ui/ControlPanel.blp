@@ -3,9 +3,9 @@ using Adw 1;
 using AstalWp 0.1;
 using Astal 4.0;
 
-template $QuickSettings: Astal.Window {
+template $ControlPanel: Astal.Window {
     styles [
-        "quick_settings_window"
+        "control_panel_window"
     ]
 
     Revealer {
@@ -15,7 +15,7 @@ template $QuickSettings: Astal.Window {
 
         Grid {
             styles [
-                "quick_settings_grid"
+                "control_panel_grid"
             ]
 
             column-homogeneous: true;
@@ -33,7 +33,7 @@ template $QuickSettings: Astal.Window {
                 }
 
                 styles [
-                    "quick_settings_grid_box"
+                    "control_panel_grid_box"
                 ]
 
                 Image {
@@ -58,9 +58,9 @@ template $QuickSettings: Astal.Window {
                 column-spacing: 5;
                 row-spacing: 5;
 
-                // Grid for QuickSettingsButtons
+                // Grid for ControlPanelButtons
                 // We need to 
-                Grid quick_settings_grid {
+                Grid control_panel_grid {
                     layout {
                         row: 0;
                         column: 0;
@@ -73,7 +73,7 @@ template $QuickSettings: Astal.Window {
                     row-spacing: 5;
 
                     styles [
-                        "quick_settings_grid_box"
+                        "control_panel_grid_box"
                     ]
                     
                 }
@@ -89,7 +89,7 @@ template $QuickSettings: Astal.Window {
                     vexpand: true;
 
                     styles [
-                        "quick_settings_grid_box"
+                        "control_panel_grid_box"
                     ]
 
                     Adw.Carousel players {
@@ -150,7 +150,7 @@ template $QuickSettings: Astal.Window {
                 }
 
                 styles [
-                    "quick_settings_grid_box"
+                    "control_panel_grid_box"
                 ]
             }
 
@@ -188,7 +188,7 @@ template $QuickSettings: Astal.Window {
                 }
 
                 styles [
-                    "quick_settings_grid_box"
+                    "control_panel_grid_box"
                 ]
             }
 
@@ -204,7 +204,7 @@ template $QuickSettings: Astal.Window {
                 hexpand: true;
 
                 styles [
-                    "quick_settings_grid_box"
+                    "control_panel_grid_box"
                 ]
 
                 Box {

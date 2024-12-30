@@ -3,7 +3,7 @@ source_files = [
     'core/App.vala',
     
     'StatusBar.vala',
-    'QuickSettings.vala',
+    'ControlPanel.vala',
     'DynamicIsland.vala',
     'Runner.vala',
     'RunnerButton.vala',

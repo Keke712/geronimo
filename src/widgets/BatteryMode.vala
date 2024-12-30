@@ -35,7 +35,7 @@ public class BatteryMode : Gtk.Box {
         header = new HeaderPanel();
         header.title = "Power Management";
         header.on_back_clicked.connect(() => {
-            QuickSettings.get_instance().show_panel("quick");
+            ControlPanel.get_instance().show_panel("quick");
         });
         header.refresh_button_visible = false;
         prepend(header);

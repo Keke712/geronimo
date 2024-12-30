@@ -45,7 +45,7 @@ public class QuickPanel : Gtk.Grid {
     [GtkCallback]
     private void network_clicked_extras() {
         this.visible = false;
-        QuickSettings.get_instance().show_panel("network");
+        ControlPanel.get_instance().show_panel("network");
     }
 
     // Bluetooth methods
@@ -59,7 +59,7 @@ public class QuickPanel : Gtk.Grid {
     [GtkCallback]
     private void bluetooth_clicked_extras() {
         this.visible = false;
-        QuickSettings.get_instance().show_panel("bluetooth");
+        ControlPanel.get_instance().show_panel("bluetooth");
     }
 
     [GtkCallback]
@@ -103,7 +103,7 @@ public class QuickPanel : Gtk.Grid {
     [GtkCallback]
     private void cryptowallet_clicked() {
         this.visible = false;
-        QuickSettings.get_instance().show_panel("crypto");
+        ControlPanel.get_instance().show_panel("crypto");
     }
 
     // Power Profiles -> Icon and methods
@@ -119,7 +119,7 @@ public class QuickPanel : Gtk.Grid {
     [GtkCallback]
     private void on_battery_extras() {
         this.visible = false;
-        QuickSettings.get_instance().show_panel("battery");
+        ControlPanel.get_instance().show_panel("battery");
     }
 
 }

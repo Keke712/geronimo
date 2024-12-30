@@ -106,9 +106,9 @@ public void switch_bar_mode() {
 
 private void setup_event_handlers () {
 	power_button.clicked.connect (() => {
-		Geronimo.open_window("QuickSettings");
-			QuickSettings.get_instance().show_panel ("quick");
-		});
+		Geronimo.open_window("ControlPanel");
+		ControlPanel.get_instance().show_panel ("quick");
+	});
 
 	apps_button.clicked.connect (() => {
 			Geronimo.open_window("Runner");
