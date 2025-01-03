@@ -1,6 +1,5 @@
 using Gtk 4.0;
 using Astal 4.0;
-using AstalWp 0.1;
 
 template $StatusBar: Astal.Window {
   styles [
@@ -8,7 +7,7 @@ template $StatusBar: Astal.Window {
   ]
 
   CenterBox {
-    start-widget: Box {
+    start-widget: Box left_box {
       spacing: 5;
 
       Button apps_button {
@@ -33,102 +32,9 @@ template $StatusBar: Astal.Window {
 
     };
 
-    center-widget: Box dynamic_box {
-        halign: center;
-        styles [
-            "dynamic_box"
-        ]
-
-        Button clock_button {
-            name: "clock_button";
-            styles[ "clock_button" ]
-            visible: true;
-            hexpand: true;
-        }
-
-        Box volume_osd {
-            orientation: horizontal;
-            visible: false;
-            width-request: 200;
-            // styles [ "blbl" ]
-
-            
-            Box {
-                orientation: horizontal;
-                halign: end;
-                width-request: 20;
-
-                Image {
-                    icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
-                    margin-start: 10;
-                    // styles [ "blbl" ]
-                }
-            }
-
-            Box {
-                orientation: horizontal;
-                hexpand: true;
-                halign: start;
-                width-request: 180;
-
-                Scale {
-                    hexpand: true;
-                    orientation: horizontal;
-                    inverted: false;
-                    margin-start: 10;
-                    margin-end: 10;
-                    styles [ "geronimo_slider" ]
-
-                    adjustment: Adjustment vol_adjust {
-                        lower: 0;
-                        upper: 1;
-                    };
-                }
-            }
-        }
-
-        Box backlight_osd {
-            orientation: horizontal;
-            visible: false;
-            width-request: 200;
-            // styles [ "blbl" ]
-
-            
-            Box {
-                orientation: horizontal;
-                halign: end;
-                width-request: 20;
-
-                Image {
-                    icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
-                    margin-start: 10;
-                    // styles [ "blbl" ]
-                }
-            }
-
-            Box {
-                orientation: horizontal;
-                hexpand: true;
-                halign: start;
-                width-request: 180;
-
-                Scale {
-                    hexpand: true;
-                    orientation: horizontal;
-                    inverted: false;
-                    margin-start: 10;
-                    margin-end: 10;
-                    styles [ "geronimo_slider" ]
-
-                    adjustment: Adjustment back_adjust {
-                        lower: 0;
-                        upper: 1;
-                    };
-                }
-            }
-        }
-
-    };
+    // center-widget: Box dynamic_box {
+    //     halign: center;
+    // };
 
     end-widget: Box right_box {
       spacing: 10;

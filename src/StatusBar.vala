@@ -20,32 +20,17 @@ private Battery battery;
 private List<Gtk.Button> workspace_buttons = new List<Gtk.Button> ();
 
 public AstalMpris.Player mpd { get; set; }
-public AstalWp.Endpoint speaker { get; set; }
 
 // UI Elements
+
+[GtkChild]
+public unowned Gtk.Box left_box;
+
 [GtkChild]
 public unowned Gtk.Box workspaces;
 
 [GtkChild]
 public unowned Gtk.Button apps_button;
-
-[GtkChild]
-public unowned Gtk.Box dynamic_box;
-
-[GtkChild]
-public unowned Gtk.Button clock_button;
-
-[GtkChild]
-public unowned Gtk.Box volume_osd;
-
-[GtkChild]
-public unowned Gtk.Adjustment vol_adjust;
-
-[GtkChild]
-public unowned Gtk.Box backlight_osd;
-
-[GtkChild]
-public unowned Gtk.Adjustment back_adjust;
 
 [GtkChild]
 public unowned Gtk.Label battery_label;
@@ -59,7 +44,8 @@ public unowned Gtk.Image battery_icon;
 // Workspace icon
 private static string wicon = "󰝥 ";
 private int max_workspace_id = 10;  // Set a maximum number of workspaces
-private bool is_initialized = false;
+public DynamicIsland dynamic_island { get; private set; }
+public int statusbar_height;
 
 public StatusBar () {
 	Object (
@@ -67,33 +53,50 @@ public StatusBar () {
 	);
 	
 	switch_bar_mode();
-    present();
+    this.present();
+    this.visible = true;  // Add this line to make the window visible
 }
 
 construct {
-	speaker = AstalWp.get_default ().audio.default_speaker;
 	mpris = AstalMpris.Mpris.get_default ();
 	hyprland = AstalHyprland.Hyprland.get_default ();
 	battery = new Battery("battery_BAT0");
 
 	init_workspaces ();
-	init_clock ();
 	init_battery();
-	init_island();
-	hover_clock();
+	
 
-	setup_event_handlers();
-
-    // Remove the clock_button click callback
-    // clock_button.clicked.connect(() => {
-    //     var center_panel = new CenterPanel();
-    //     center_panel.present();
-    // });
-
-	GLib.Timeout.add(1000, () => {
-		is_initialized = true;
+	GLib.Timeout.add(400, () => {
+		statusbar_height = get_natural_height();
+		init_island();
 		return false;
 	});
+
+	setup_event_handlers();	
+}
+
+public int get_natural_height() {
+    int minimum;
+    int natural;
+    int minimum_baseline;
+    int natural_baseline;
+
+    // Check if left_box is initialized
+    if (left_box == null) {
+        print("left_box is not initialized\n");
+        return -1;
+    }
+
+    left_box.measure(Gtk.Orientation.VERTICAL, -1, out minimum, out natural, out minimum_baseline, out natural_baseline);
+
+    return natural;
+}
+
+private void init_island() {
+    // Code to initialize and display the dynamic island
+	var margin_top = -statusbar_height;
+    dynamic_island = new DynamicIsland(margin_top);
+    dynamic_island.show();
 }
 
 public void switch_bar_mode() {
@@ -117,7 +120,7 @@ private void setup_event_handlers () {
 
 // Battery methods
 
-// Treshold constants
+// Threshold constants
 private const int BATTERY_LOW_THRESHOLD = 20;
 private const int BATTERY_CAUTION_THRESHOLD = 40;
 private const int BATTERY_GOOD_THRESHOLD = 70;
@@ -221,122 +224,6 @@ private void init_battery () {
 			update_battery ();
 			return true;
 		});
-}
-
-// Clock methods
-private bool using_clock = true;
-
-private void update_clock () {
-	var clock_time = new DateTime.now_local ();
-	clock_button.label = clock_time.format ("%H:%M");
-}
-
-private void init_clock () {
-	update_clock ();
-	GLib.Timeout.add (30000, () => {
-			if (using_clock) { update_clock (); }
-			return true;
-		});
-}
-
-private DynamicIsland center_panel = DynamicIsland.get_instance();
-private bool is_mouse_over_calendar;
-private bool is_mouse_over_clock;
-
-private void expand_dynamic() {
-	GLib.Timeout.add (10, () => {
-		int cp_width = center_panel.get_allocated_width();
-		dynamic_box.set_size_request(cp_width, -1); // Set width based on center_panel
-		dynamic_box.queue_draw();
-		
-		return false;
-	});
-}
-
-private void collapse_dynamic() {
-	dynamic_box.set_size_request(-1, -1); // Reset to default width
-	dynamic_box.queue_draw();
-}
-
-private void do_action() {
-	if (!is_mouse_over_clock && !is_mouse_over_calendar) {
-		GLib.Timeout.add (50, () => {
-			if (!is_mouse_over_clock && !is_mouse_over_calendar){
-				dynamic_box.remove_css_class("expanded");
-				collapse_dynamic();
-				center_panel.hide_panel();
-			}
-			
-			return false;
-		});
-	}else{
-		dynamic_box.add_css_class("expanded");
-		expand_dynamic();
-		center_panel.show_panel();
-	}
-}
-
-private void hover_clock () {
-
-    // HOVER CALENDAR
-    var hover_controller_calendar = new Gtk.EventControllerMotion();
-    hover_controller_calendar.enter.connect(() => {
-        is_mouse_over_calendar = true;
-		do_action();
-    });
-    hover_controller_calendar.leave.connect(() => {
-		is_mouse_over_calendar = false;
-		do_action();
-    });
-    center_panel.dynamicisland_box.add_controller(hover_controller_calendar);
-
-	// HOVER CLOCK
-    var hover_controller_button = new Gtk.EventControllerMotion();
-    hover_controller_button.enter.connect(() => {
-		is_mouse_over_clock = true;
-		do_action();
-		expand_dynamic();  // Ensure dynamic island expands immediately
-    });
-    hover_controller_button.leave.connect(() => {
-		is_mouse_over_clock = false;
-		do_action();
-    });
-    clock_button.add_controller(hover_controller_button);
-}
-
-// Dynamic island methods
-
-private uint hide_timeout_id = 0;
-
-private void init_island () {
-	speaker.bind_property ("volume", vol_adjust, "value", GLib.BindingFlags.BIDIRECTIONAL | GLib.BindingFlags.SYNC_CREATE);
-    // Connecte l'événement sans paramètres
-	speaker.notify["volume"].connect(() => {
-		if (is_initialized) {
-        	clock_button.visible = false;
-			volume_osd.visible = true;
-			handle_timeout();
-		}
-    });
-}
-
-private void handle_timeout() {
-	// Remove the existing timeout if it exists
-	if (hide_timeout_id != 0) {
-		GLib.Source.remove(hide_timeout_id);
-		hide_timeout_id = 0;
-	}
-	
-	// Set a new timeout
-	hide_timeout_id = GLib.Timeout.add(3000, () => {
-        // Définition d'un nouveau timeout pour masquer le volume
-		clock_button.visible = true;
-        volume_osd.visible = false;
-		
-
-		hide_timeout_id = 0;
-		return false;
-	});
 }
 
 // Workspace methods

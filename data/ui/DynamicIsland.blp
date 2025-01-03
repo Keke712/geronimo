@@ -1,43 +1,128 @@
 using Gtk 4.0;
 using Astal 4.0;
+using AstalWp 0.1;
 
 template $DynamicIsland: Astal.Window {
     styles [
         "dynamicisland_window"
     ]
+    
+    Box dynamic_box {
+        orientation: vertical;  // Changement ici pour empiler verticalement
+        styles [
+            "dynamic_box"
+        ]
 
-    EventControllerKey {
-        key-released => $key_released();
-    }
+        Box control_box {      // Nouveau conteneur pour les contrôles
+            orientation: horizontal;
+            
+            Button clock_button {
+                name: "clock_button";
+                styles[ "clock_button" ]
+                visible: true;
+                hexpand: true;
+                height-request: 35;
+                width-request: 200;
+            }
 
-    Revealer {
-        transition-duration: 300;
-        transition-type: slide_up;
-        reveal-child: bind template.visible;
+            Box volume_osd {   
+                orientation: horizontal;
+                visible: false;
+                width-request: 200;
+                
+                Box {
+                    orientation: horizontal;
+                    halign: end;
+                    width-request: 20;
 
-        Box dynamicisland_box {
-            orientation: vertical;
-
-            styles [
-                "dynamicisland_master"
-            ]
-
-            // Calendar Grid (1:1)
-            Box {
-                styles ["calendar-container"]
-                margin-start: 10;
-                margin-end: 10;
-                margin-top: 15;
-                margin-bottom: 10;
-
-                Gtk.Calendar calendar {
-                    hexpand: true;
-                    vexpand: true;
-
-                    styles [
-                        "control_panel_grid_box"
-                    ]
+                    Image {
+                        icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
+                        margin-start: 10;
+                        // styles [ "blbl" ]
+                    }
                 }
+
+                Box {
+                    orientation: horizontal;
+                    hexpand: true;
+                    halign: start;
+                    width-request: 180;
+
+                    Scale {
+                        hexpand: true;
+                        orientation: horizontal;
+                        inverted: false;
+                        margin-start: 10;
+                        margin-end: 10;
+                        styles [ "geronimo_slider" ]
+
+                        adjustment: Adjustment vol_adjust {
+                            lower: 0;
+                            upper: 1;
+                        };
+                    }
+                }
+            }
+
+            Box backlight_osd {
+                orientation: horizontal;
+                visible: false;
+                width-request: 200;
+                // styles [ "blbl" ]
+
+                
+                Box {
+                    orientation: horizontal;
+                    halign: end;
+                    width-request: 20;
+
+                    Image {
+                        icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
+                        margin-start: 10;
+                        // styles [ "blbl" ]
+                    }
+                }
+
+                Box {
+                    orientation: horizontal;
+                    hexpand: true;
+                    halign: start;
+                    width-request: 180;
+
+                    Scale {
+                        hexpand: true;
+                        orientation: horizontal;
+                        inverted: false;
+                        margin-start: 10;
+                        margin-end: 10;
+                        styles [ "geronimo_slider" ]
+
+                        adjustment: Adjustment back_adjust {
+                            lower: 0;
+                            upper: 1;
+                        };
+                    }
+                }
+            }
+        }
+
+        // Calendar déplacé après les contrôles
+        Box calendar_box {
+            styles ["calendar-container"]
+            margin-start: 10;
+            margin-end: 10;
+            margin-top: 10;
+            margin-bottom: 10;
+            orientation: vertical;
+            visible: false;
+
+            Gtk.Calendar calendar {
+                hexpand: true;
+                vexpand: true;
+
+                styles [
+                    "control_panel_grid_box"
+                ]
             }
         }
     }

@@ -4,6 +4,7 @@ private bool css_loaded = false;
 
 public static Astal.Application instance;
 
+// Handle incoming requests
 public override void request (string msg, SocketConnection conn) {
 	AstalIO.write_sock.begin(conn, @"missing response implementaton on $instance_name");
 }
@@ -25,11 +26,12 @@ public Geronimo() {
 	);
 }
 
+// Open a window by name
 public static void open_window(string str) {
 	try {
 		instance.toggle_window(str);
 	} catch (GLib.Error e) {
-		warning("Erreur GLib : %s", e.message);
+		warning("GLib Error: %s", e.message);
 	}
 }
 
@@ -42,14 +44,14 @@ public override void activate(){
 		css_loaded = true;
 	}
 
-	add_window (new StatusBar ());
-	add_window (new ControlPanel ());
-	add_window (new Runner ());
-	add_window (new Popup ());
+	add_window(new StatusBar());
+	add_window(new Runner());
+	add_window(new ControlPanel());
 
 	this.hold();
 }
 
+// Load CSS from resource
 void load_css () {
 	Gtk.CssProvider provider = new Gtk.CssProvider ();
 	provider.load_from_resource ("com/github/Keke712/geronimo/geronimo.css");
@@ -57,6 +59,7 @@ void load_css () {
 						   Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
+// Process command line arguments
 public string process_command (string command) {
 	string[] args = command.split (" ");
 	string response = "";
@@ -97,6 +100,7 @@ public string process_command (string command) {
 	return response;
 }
 
+// Print help message
 private string print_help () {
 	return "Usage: geronimo [options]\n"
 	       + "Options:\n"
@@ -105,6 +109,7 @@ private string print_help () {
 	       + "  \033[34m-h|--help\033[0m                    | Show this help message";
 }
 
+// Handle command line input
 public override int command_line (ApplicationCommandLine command_line) {
 	string[] args = command_line.get_arguments ();
 

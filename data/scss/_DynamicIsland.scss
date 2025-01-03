@@ -2,6 +2,9 @@
 
 .dynamicisland_window {
     background-color: transparent;
+    transition: min-height 3s ease-in-out,
+                height 3s ease-in-out,
+                width 3s ease-in-out;
 }
 
 .dynamicisland_master {
@@ -9,3 +12,8 @@
     border-radius: 0 0 10px 10px;
 }
 
+.dynamicisland_label {
+    color: $light-color;
+    font-size: 1.5em;
+    font-weight: bold;
+}
