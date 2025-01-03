@@ -1,4 +1,4 @@
-APP_NAME := "morghulis"
+APP_NAME := "geronimo"
 BIN_DIR := "build"
 
 run: build
