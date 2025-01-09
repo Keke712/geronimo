@@ -8,12 +8,15 @@ template $DynamicIsland: Astal.Window {
     ]
     
     Box dynamic_box {
-        orientation: vertical;  // Changement ici pour empiler verticalement
+        width-request: 250;
+        orientation: vertical;
         styles [
             "dynamic_box"
         ]
 
-        Box control_box {      // Nouveau conteneur pour les contrôles
+        // Main control section containing clock and volume controls
+        Box control_box {
+            width-request: 250;
             orientation: horizontal;
             
             Button clock_button {
@@ -22,13 +25,14 @@ template $DynamicIsland: Astal.Window {
                 visible: true;
                 hexpand: true;
                 height-request: 35;
-                width-request: 200;
+                width-request: 300;
             }
 
-            Box volume_osd {   
+            Box volume_osd {
                 orientation: horizontal;
                 visible: false;
-                width-request: 200;
+                margin-top: 5;
+                width-request: 250;
                 
                 Box {
                     orientation: horizontal;
@@ -38,7 +42,6 @@ template $DynamicIsland: Astal.Window {
                     Image {
                         icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
                         margin-start: 10;
-                        // styles [ "blbl" ]
                     }
                 }
 
@@ -67,9 +70,8 @@ template $DynamicIsland: Astal.Window {
             Box backlight_osd {
                 orientation: horizontal;
                 visible: false;
-                width-request: 200;
-                // styles [ "blbl" ]
-
+                margin-top: 5;
+                width-request: 250;
                 
                 Box {
                     orientation: horizontal;
@@ -79,7 +81,6 @@ template $DynamicIsland: Astal.Window {
                     Image {
                         icon-name: bind template.speaker as <AstalWp.Endpoint>.volume-icon;
                         margin-start: 10;
-                        // styles [ "blbl" ]
                     }
                 }
 
@@ -106,23 +107,50 @@ template $DynamicIsland: Astal.Window {
             }
         }
 
-        // Calendar déplacé après les contrôles
+        // Calendar section
         Box calendar_box {
+            width-request: 200;
             styles ["calendar-container"]
-            margin-start: 10;
-            margin-end: 10;
-            margin-top: 10;
-            margin-bottom: 10;
             orientation: vertical;
             visible: false;
+            halign: center;
+            margin-end: 0;
+            margin-start: 0;
 
-            Gtk.Calendar calendar {
+            Box days_container {
+                orientation: vertical;
                 hexpand: true;
-                vexpand: true;
+                halign: center;
+                spacing: 4;
+                styles ["days-container"]
 
-                styles [
-                    "control_panel_grid_box"
-                ]
+                Label month_label {
+                    styles ["month-label"]
+                }
+
+                Box {
+                    orientation: horizontal;
+
+                    Button prev_button {
+                        styles ["nav-button"]
+                        icon-name: "pan-start-symbolic";
+                    }
+
+                    Box days_box {
+                        orientation: horizontal;
+                        hexpand: true;
+                        halign: center;
+                        spacing: 2;
+                        styles ["days-box"]
+                    }
+
+                    Button next_button {
+                        styles ["nav-button"]
+                        icon-name: "pan-end-symbolic";
+                    }
+
+                }
+
             }
         }
     }

@@ -1,10 +1,99 @@
 @import "Colors";
 
+// Main window styling
 .dynamicisland_window {
     background-color: transparent;
-    transition: min-height 3s ease-in-out,
-                height 3s ease-in-out,
-                width 3s ease-in-out;
+}
+
+// Main container with expansion animation
+.dynamic_box {
+    transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 35px;
+    
+    &.expanded {
+        min-height: 150px;
+        border-radius: 0 0 20px 20px;
+        background: rgba(0, 0, 0, 0.4);
+    }
+}
+
+// Calendar styling
+.calendar-container {
+    opacity: 0;
+    transition: all 400ms ease-in;
+    padding: 6px;
+    background: transparent;
+    border-radius: 0 0 20px 20px;
+    margin: 4px;
+    margin-top: 0;
+}
+
+.calendar-container.visible {
+    opacity: 1;
+}
+
+.days-container {
+    scrollbar {
+        background: transparent;
+        border-radius: 10px;
+        min-height: 5px;
+    }
+    
+    scrollbar slider {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        min-height: 5px;
+    }
+}
+
+.days-box {
+    background: transparent;
+    min-height: 24px;
+    border-radius: 6px;
+}
+
+.day-button {
+    margin: 0px;
+    background: rgba(20, 20, 20, 0.3);  // Plus transparent
+    color: rgba(255, 255, 255, 0.9);  // Légère transparence du texte
+    font-size: 12px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    min-width: 24px;
+    opacity: 0.8;
+    transition: all 200ms ease;
+    
+    &:hover {
+        background: rgba($color: $highlight-color, $alpha: 0.6);  // Plus transparent
+        opacity: 1;
+        color: white;  // Texte plein en hover
+    }
+    
+    &.current {
+        background: rgba($highlight-color, 0.7);  // Plus transparent
+        opacity: 1;
+        color: white;  // Texte plein pour le jour actuel
+    }
+}
+
+.nav-button {
+    background: transparent;  // Plus transparent
+    color: rgba(255, 255, 255, 0.9);
+    min-width: 24px;
+    min-height: 24px;
+    border: none;
+    opacity: 1;
+    transition: all 200ms ease;
+    
+    &:hover {
+        background: rgba(40, 40, 40, 0.7);  // Plus transparent
+        color: white;
+    }
+    
+    &:disabled {
+        opacity: 0.4;  // Plus transparent
+        background: rgba(5, 5, 5, 0.5);
+    }
 }
 
 .dynamicisland_master {
@@ -12,8 +101,32 @@
     border-radius: 0 0 10px 10px;
 }
 
-.dynamicisland_label {
-    color: $light-color;
-    font-size: 1.5em;
-    font-weight: bold;
+.clock_button {
+    color: white;
+    font-size: 14px;
+    font-weight: normal;  // Changé de bold à normal
+    background: transparent;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 4px;
+
+    &:hover {
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+    }
 }
+
+.current-date {
+    font-size: 20px;  // Réduit de 24px à 20px
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.95);  // Légère transparence
+    margin: 1px 0;  // Réduit encore les marges
+    padding: 0;
+}
+
+.month-label {
+    font-size: 14px;  // Réduit de 12px à 11px
+    color: rgba(255, 255, 255, 0.7);  // Plus transparent
+    margin-bottom: 2px;  // Réduit de 4px à 2px
+}
+

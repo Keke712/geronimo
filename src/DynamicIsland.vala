@@ -1,6 +1,15 @@
 using GtkLayerShell;
 using Gtk;
 
+// Core panel dimensions
+private const int PANEL_DEFAULT_WIDTH = 250;
+private const int PANEL_EXPANDED_WIDTH = 300;
+private const int PANEL_MIN_HEIGHT = 35;
+private const int PANEL_MAX_HEIGHT = 150;
+private const int PANEL_DELAY_SHOW = 400;
+private const int PANEL_DELAY_HIDE = 800;
+private const int DAYS_INTERVAL = 3;  // Number of days shown in calendar view
+
 [GtkTemplate (ui = "/com/github/Keke712/geronimo/ui/DynamicIsland.ui")]
 public class DynamicIsland : Astal.Window {
 
@@ -27,6 +36,23 @@ public class DynamicIsland : Astal.Window {
     
     [GtkChild]
     public unowned Gtk.Adjustment back_adjust;
+
+    [GtkChild]
+    private unowned Gtk.Box days_box;
+    
+    [GtkChild]
+    private unowned Gtk.Button prev_button;
+    
+    [GtkChild]
+    private unowned Gtk.Button next_button;
+    
+    [GtkChild]
+    private unowned Gtk.Label month_label;
+
+    private int visible_start = 0;
+    
+    private Gtk.Button[] day_buttons;
+    private int current_day;
 
     private static DynamicIsland? instance;
     private int initial_width;
@@ -67,6 +93,7 @@ public class DynamicIsland : Astal.Window {
         });
 
         init_hover();
+        init_days();
     }
 
     public static DynamicIsland get_instance() {
@@ -88,12 +115,19 @@ public class DynamicIsland : Astal.Window {
     }
 
     public void show_panel() {
-        set_size_request(-1, -1); // Allow natural resizing
         calendar_box.visible = true;
+        dynamic_box.add_css_class("expanded");
+        
+        GLib.Timeout.add(50, () => {  // Short delay to let the transition start
+            calendar_box.add_css_class("visible");
+            return false;
+        });
     }
 
     public void hide_panel() {
-        calendar_box.visible = false;
+        calendar_box.visible = false;  // Changed to be immediate
+        dynamic_box.remove_css_class("expanded");
+        set_size_request(PANEL_DEFAULT_WIDTH, PANEL_MIN_HEIGHT);
         reset_size();
     }
 
@@ -123,20 +157,15 @@ public class DynamicIsland : Astal.Window {
     private bool is_mouse_over_dynamic;
 
     private uint hover_timeout_id = 0;
-    private void do_action() {
+
+    private void handle_hover_state() {  // Renamed from do_action
         if (hover_timeout_id != 0) {
             GLib.Source.remove(hover_timeout_id);
             hover_timeout_id = 0;
         }
 
         if (!is_mouse_over_dynamic) {
-            hover_timeout_id = GLib.Timeout.add(300, () => {
-                if (!is_mouse_over_dynamic) {
-                    hide_panel();
-                }
-                hover_timeout_id = 0;
-                return false;
-            });
+            hide_panel();  // Removed timeout, immediate close
         } else {
             show_panel();
         }
@@ -146,11 +175,11 @@ public class DynamicIsland : Astal.Window {
         var hover_controller = new Gtk.EventControllerMotion();
         hover_controller.enter.connect(() => {
             is_mouse_over_dynamic = true;
-            do_action();
+            handle_hover_state();  // Updated call
         });
         hover_controller.leave.connect(() => {
             is_mouse_over_dynamic = false;
-            do_action();
+            handle_hover_state();  // Updated call
         });
         dynamic_box.add_controller(hover_controller);
     }
@@ -176,5 +205,61 @@ public class DynamicIsland : Astal.Window {
             hide_timeout_id = 0;
             return false;
         });
+    }
+
+    private DateTime current_date_obj;
+    private int days_offset = 0;
+    
+    private void init_days() {
+        if (days_box == null) return;
+
+        current_date_obj = new DateTime.now_local();
+        update_calendar_view();
+        
+        prev_button.clicked.connect(() => {
+            days_offset -= 1;  // Navigate day by day
+            current_date_obj = current_date_obj.add_days(-1);
+            update_calendar_view();
+        });
+        
+        next_button.clicked.connect(() => {
+            days_offset += 1;
+            current_date_obj = current_date_obj.add_days(1);
+            update_calendar_view();
+        });
+    }
+    
+    private void update_calendar_view() {
+        // Update current date and month
+        month_label.label = current_date_obj.format("%B %Y");
+        
+        // Clean up old buttons
+        Gtk.Widget? child = days_box.get_first_child();
+        while (child != null) {
+            var next_child = child.get_next_sibling();
+            days_box.remove(child);
+            child = next_child;
+        }
+        
+        // Create buttons for 3 days (previous, current, next)
+        day_buttons = new Gtk.Button[DAYS_INTERVAL];
+        
+        for (int i = -1; i <= 1; i++) {
+            var date = current_date_obj.add_days(i);
+            var button = new Gtk.Button.with_label(date.format("%d"));
+            button.visible = true;
+            button.add_css_class("day-button");
+            
+            if (i == 0) {
+                button.add_css_class("current");
+            }
+            
+            days_box.append(button);
+            day_buttons[i + 1] = button;
+        }
+        
+        // Enable/disable navigation buttons
+        prev_button.sensitive = true;
+        next_button.sensitive = days_offset < 30;  // Limit to one month ahead
     }
 }
